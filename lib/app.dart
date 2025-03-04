@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:traxie/bloc/app_data_bloc.dart';
 import 'package:traxie/cubit/navigation_cubit.dart';
 import 'package:traxie/l10n/l10n.dart';
 import 'package:traxie/screen/screen_shell.dart';
@@ -10,8 +11,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<NavigationCubit>(
-      create: (context) => NavigationCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<NavigationCubit>(create: (context) => NavigationCubit()),
+        BlocProvider<AppDataBloc>(
+          create: (context) => AppDataBloc()..add(AppDataInitializedEvent()),
+        ),
+      ],
       child: MaterialApp(
         title: 'Traxie - A tracking app',
         theme: ThemeData(

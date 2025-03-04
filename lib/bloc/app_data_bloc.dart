@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:calendar_view/calendar_view.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:traxie/model/journal_entry_model.dart';
@@ -12,7 +13,13 @@ part 'app_data_event.dart';
 part 'app_data_state.dart';
 
 class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
-  AppDataBloc() : super(const AppDataInitial([], [])) {
+  AppDataBloc()
+      : super(
+          const AppDataInitial(
+            journalEntryModels: [],
+            periodModels: [],
+          ),
+        ) {
     on<AppDataInitializedEvent>(_onAppDataInitializedEvent);
   }
 
@@ -20,15 +27,26 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     AppDataInitializedEvent event,
     Emitter<AppDataBaseState> emit,
   ) {
+    final entryModelRepository = GetIt.I.get<JournalEntryModelRepository>();
+    final periodModelRepository = GetIt.I.get<PeriodModelRepository>();
     if (state.journalEntryModels.isEmpty && state.periodModels.isEmpty) {
-      final journalEntryModels = GetIt.I.get<JournalEntryModelRepository>().getAllModels();
-      final periodModels = GetIt.I.get<PeriodModelRepository>().getAllModels();
       emit(
         AppDataReadyState(
-          journalEntryModels,
-          periodModels,
+          journalEntryModels: entryModelRepository.getAllModels(),
+          periodModels: periodModelRepository.getAllModels(),
         ),
       );
     }
+  }
+
+  Future<void> addEntryModel(JournalEntryModel model) async {
+    return;
+  }
+
+  Future<void> clearTestData() async {
+    final entryModelRepository = GetIt.I.get<JournalEntryModelRepository>();
+    final periodModelRepository = GetIt.I.get<PeriodModelRepository>();
+    await entryModelRepository.clearAllTrackingData();
+    await periodModelRepository.clearAllTrackingData();
   }
 }

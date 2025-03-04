@@ -1,10 +1,8 @@
 import 'package:hive/hive.dart';
-
 part 'journal_entry_model.g.dart';
 
 @HiveType(typeId: 1)
 class JournalEntryModel extends HiveObject {
-
   JournalEntryModel({
     required this.trackingDate,
     required this.flowStrength,
@@ -15,7 +13,7 @@ class JournalEntryModel extends HiveObject {
 
   factory JournalEntryModel.fromJson(Map<String, dynamic> json) {
     return JournalEntryModel(
-      trackingDate: DateTime.parse(json['trackingDate']as String),
+      trackingDate: DateTime.parse(json['trackingDate'] as String),
       flowStrength: json['flowStrength'] as int,
     );
   }

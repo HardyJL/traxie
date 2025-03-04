@@ -8,7 +8,7 @@ part of 'period_model.dart';
 
 class PeriodModelAdapter extends TypeAdapter<PeriodModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 10;
 
   @override
   PeriodModel read(BinaryReader reader) {
@@ -17,10 +17,10 @@ class PeriodModelAdapter extends TypeAdapter<PeriodModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PeriodModel(
-      cycleLength: fields[1] as int,
-      periodLength: fields[0] as int,
-      periodStartDate: fields[2] as DateTime,
-      periodEndDate: fields[3] as DateTime,
+      cycleLength: fields[12] == null ? 28 : fields[12] as int,
+      periodLength: fields[11] == null ? 6 : fields[11] as int,
+      periodStartDate: fields[13] as DateTime,
+      periodEndDate: fields[14] as DateTime,
     );
   }
 
@@ -28,13 +28,13 @@ class PeriodModelAdapter extends TypeAdapter<PeriodModel> {
   void write(BinaryWriter writer, PeriodModel obj) {
     writer
       ..writeByte(4)
-      ..writeByte(0)
+      ..writeByte(11)
       ..write(obj.periodLength)
-      ..writeByte(1)
+      ..writeByte(12)
       ..write(obj.cycleLength)
-      ..writeByte(2)
+      ..writeByte(13)
       ..write(obj.periodStartDate)
-      ..writeByte(3)
+      ..writeByte(14)
       ..write(obj.periodEndDate);
   }
 

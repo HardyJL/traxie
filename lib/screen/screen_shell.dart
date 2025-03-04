@@ -16,18 +16,20 @@ class ScreenShell extends StatelessWidget {
       appBar: const TraxieAppBar(
         title: 'Traxie',
       ),
-      body: BlocBuilder<NavigationCubit, NavigationState>(
-        builder: (context, state) {
-          switch (state.currentScreen.index) {
-            case 0:
+      body: SingleChildScrollView(
+        child: BlocBuilder<NavigationCubit, NavigationState>(
+          builder: (context, state) {
+            switch (state.currentScreen.index) {
+              case 0:
                 return const CalendarScreen();
-            case 1:
-              return const StartScreen();
-            case 2:
-              return const HistoryScreen();
-          }
-          return Container();
-        },
+              case 1:
+                return const StartScreen();
+              case 2:
+                return const HistoryScreen();
+            }
+            return Container();
+          },
+        ),
       ),
       bottomNavigationBar: const TraxieBottomNavBar(),
     );

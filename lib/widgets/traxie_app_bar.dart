@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:traxie/bloc/app_data_bloc.dart';
 
 class TraxieAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TraxieAppBar({
@@ -16,7 +18,26 @@ class TraxieAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.settings),
-          onPressed: () {},
+          onPressed: () async {
+            final bloc = context.read<AppDataBloc>();
+            final state = bloc.state;
+            await showDialog<void>(
+              context: context,
+              builder: (_) => AlertDialog.adaptive(
+                content: Column(
+                  children: [
+                    Text(
+                      'Journal Conut ${state.journalEntryModels.length} - Period Count ${state.periodModels.length}',
+                    ),
+                    ElevatedButton(
+                      onPressed: bloc.clearTestData,
+                      child: const Text('Clear'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ],
     );
