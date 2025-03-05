@@ -20,7 +20,12 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
             periodModels: [],
           ),
         ) {
-    on<AppDataInitializedEvent>(_onAppDataInitializedEvent);
+    on<AppDataInitializedEvent>(
+      _onAppDataInitializedEvent,
+    );
+    on<AppDataTrackingChangedPressedEvent>(
+      _onAppDataTrackingChangedPressedEvent,
+    );
   }
 
   FutureOr<void> _onAppDataInitializedEvent(
@@ -48,5 +53,23 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     final periodModelRepository = GetIt.I.get<PeriodModelRepository>();
     await entryModelRepository.clearAllTrackingData();
     await periodModelRepository.clearAllTrackingData();
+  }
+
+  FutureOr<void> _onAppDataTrackingChangedPressedEvent(
+    AppDataTrackingChangedPressedEvent event,
+    Emitter<AppDataBaseState> emit,
+  ) {
+    final journalModel = state.journalEntryModels
+            .where((e) => e.trackingDate == event.trackingDate)
+            .firstOrNull ??
+        JournalEntryModel(trackingDate: event.trackingDate, flowStrength: 0);
+
+    emit(
+      AppDataSelectingDateState(
+        journalEntryModels: state.journalEntryModels,
+        periodModels: state.periodModels,
+        currentModel: journalModel,
+      ),
+    );
   }
 }

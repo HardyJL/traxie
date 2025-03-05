@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:traxie/bloc/app_data_bloc.dart';
 import 'package:traxie/theme_colors.dart';
 
 class TraxieCalendar extends StatelessWidget {
@@ -7,11 +9,12 @@ class TraxieCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<AppDataBloc>();
     return TableCalendar(
       onDaySelected: (date, _) {
-        // context.push('/flow-tracking', extra: date);
+        bloc.add(AppDataTrackingChangedPressedEvent(trackingDate: date));
       },
-      eventLoader: (_) => [],
+      eventLoader: bloc.state.generateEventsForTracking,
       firstDay: DateTime.utc(2016, 10, 16),
       lastDay: DateTime.utc(2100, 3, 14),
       focusedDay: DateTime.now(),

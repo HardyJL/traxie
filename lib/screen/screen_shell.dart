@@ -17,6 +17,9 @@ class ScreenShell extends StatelessWidget {
         title: 'Traxie',
       ),
       body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
         child: BlocBuilder<NavigationCubit, NavigationState>(
           builder: (context, state) {
             switch (state.currentScreen.index) {

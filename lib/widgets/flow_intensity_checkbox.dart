@@ -1,61 +1,38 @@
-// import 'package:flutter/material.dart';
-// import 'package:period_tracker_hw/model/tracking_provider.dart';
-// import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:traxie/bloc/app_data_bloc.dart';
 
-// class FlowIntensityCheckbox extends StatelessWidget {
-//   const FlowIntensityCheckbox({super.key});
+class FlowIntensityCheckbox extends StatelessWidget {
+  const FlowIntensityCheckbox({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final flowTrackingProvider = Provider.of<TrackingProvider>(context);
+  @override
+  Widget build(BuildContext context) {
+    final state =
+        context.read<AppDataBloc>().state as AppDataSelectingDateState;
 
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       crossAxisAlignment: CrossAxisAlignment.stretch,
-//       children: [
-//         CheckboxListTile(
-//             title: const Text('None'),
-//             value: flowTrackingProvider.currentModel.flowStrength == 0,
-//             onChanged: (value) => removeIfExists(value, flowTrackingProvider)),
-//         CheckboxListTile(
-//           title: const Text('Light'),
-//           value: flowTrackingProvider.currentModel.flowStrength == 1,
-//           onChanged: (bool? value) {
-//             if (value == true) {
-//               // _onIntensityChanged(1);
-//               updateCurrentValue(1, flowTrackingProvider);
-//             }
-//           },
-//         ),
-//         CheckboxListTile(
-//           title: const Text('Middle'),
-//           value: flowTrackingProvider.currentModel.flowStrength == 2,
-//           onChanged: (bool? value) {
-//             if (value == true) {
-//               updateCurrentValue(2, flowTrackingProvider);
-//             }
-//           },
-//         ),
-//         CheckboxListTile(
-//           title: const Text('Heavy'),
-//           value: flowTrackingProvider.currentModel.flowStrength == 3,
-//           onChanged: (bool? value) {
-//             if (value == true) {
-//               updateCurrentValue(3, flowTrackingProvider);
-//             }
-//           },
-//         ),
-//       ],
-//     );
-//   }
-
-//   void removeIfExists(bool? value, TrackingProvider provider) {
-//     provider.changeCurrentModelStrength(0);
-//     provider.removeFlowTrackingModel(provider.currentModel);
-//   }
-
-//   void updateCurrentValue(int value, TrackingProvider provider) {
-//     provider.addFlowTrackingModel(value);
-//     provider.changeCurrentModelStrength(value);
-//   }
-// }
+    return Column(
+      children: [
+        CheckboxListTile(
+          title: const Text('None'),
+          value: state.currentModel.flowStrength == 0,
+          onChanged: (value) => {},
+        ),
+        CheckboxListTile(
+          title: const Text('Light'),
+          value: state.currentModel.flowStrength == 1,
+          onChanged: (bool? value) {},
+        ),
+        CheckboxListTile(
+          title: const Text('Middle'),
+          value: state.currentModel.flowStrength == 2,
+          onChanged: (bool? value) {},
+        ),
+        CheckboxListTile(
+          title: const Text('Heavy'),
+          value: state.currentModel.flowStrength == 3,
+          onChanged: (bool? value) {},
+        ),
+      ],
+    );
+  }
+}
