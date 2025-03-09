@@ -5,13 +5,19 @@ sealed class AppDataBaseState {
   const AppDataBaseState({
     required this.journalEntryModels,
     required this.periodModels,
-    this.estimateCycleLength = 28,
-    this.estimatePeriodLength = 5,
   });
   final List<JournalEntryModel> journalEntryModels;
   final List<PeriodModel> periodModels;
-  final int estimateCycleLength;
-  final int estimatePeriodLength;
+  double estimateAverage(int Function(PeriodModel) fieldSelector) {
+    return periodModels
+            .ignoreLast()
+            .fold(0, (prev, e) => prev + fieldSelector(e)) /
+        periodModels.ignoreLast().length;
+  }
+
+  int get estimateCycleLength => estimateAverage((e) => e.cycleLength).round();
+  int get estimatePeriodLength =>
+      estimateAverage((e) => e.periodLength).round();
 
   DateTime get estimatedPeriodStartDate => periodModels.last.periodStartDate
       .add(Duration(days: estimateCycleLength));
@@ -47,6 +53,22 @@ final class AppDataSelectingDateState extends AppDataReadyState {
     required super.journalEntryModels,
     required super.periodModels,
     required this.currentModel,
+    this.isCurrentlyChanging = false,
+    this.directionForward = false,
   });
   final JournalEntryModel currentModel;
+  final bool isCurrentlyChanging;
+  final bool directionForward;
+  // void changeModel({bool forward = false}) {
+  //   final nextDate = currentModel.trackingDate.add(
+  //     Duration(days: forward ? 1 : -1),
+  //   );
+  //   final nextModel = journalEntryModels.firstWhere(
+  //     (e) => e.trackingDate == nextDate.withoutTime,
+  //     orElse: () => JournalEntryModel(
+  //       trackingDate: nextDate.withoutTime,
+  //       flowStrength: 0,
+  //     ),
+  //   );
+  // }
 }

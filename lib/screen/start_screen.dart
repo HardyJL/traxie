@@ -29,7 +29,6 @@ class StartScreen extends StatelessWidget {
                   height: 220,
                   width: 220,
                   child: Transform.rotate(
-                    // TODO fix this
                     angle: state.durationUntilEstimatedPeriod /
                         state.estimateCycleLength *
                         360 *

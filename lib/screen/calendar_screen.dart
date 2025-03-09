@@ -11,11 +11,34 @@ class CalendarScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AppDataBloc, AppDataBaseState>(
       listener: (ctx, state) {
-        if (state is AppDataSelectingDateState) {}
-        showDialog<void>(
-          context: context,
-          builder: (ctx) => const FlowTrackingSelectionDialog(),
-        );
+        if (state is AppDataSelectingDateState) {
+          state.isCurrentlyChanging
+              ? Navigator.of(ctx).pushReplacement(
+                  PageRouteBuilder<void>(
+                    pageBuilder: (_, __, ___) => const FlowTrackingScreen(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      final begin = Offset(state.directionForward ? 1 : -1, 0);
+                      const end = Offset.zero;
+                      const curve = Curves.ease;
+
+                      final tween = Tween(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                  ),
+                )
+              : Navigator.of(ctx).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const FlowTrackingScreen(),
+                  ),
+                );
+        }
+        // navigate to flowTrackingScreen
       },
       child: const Padding(
         padding: EdgeInsets.all(16),

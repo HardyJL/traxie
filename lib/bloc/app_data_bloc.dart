@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
+import 'package:traxie/extensions/period_list_extension.dart';
 import 'package:traxie/model/journal_entry_model.dart';
 import 'package:traxie/model/period_model.dart';
 import 'package:traxie/repository/journal_entry_model_repository.dart';
@@ -69,6 +70,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
         journalEntryModels: state.journalEntryModels,
         periodModels: state.periodModels,
         currentModel: journalModel,
+        isCurrentlyChanging: event.isCurrentlyChanging,
+        directionForward: event.directionForward,
       ),
     );
   }
