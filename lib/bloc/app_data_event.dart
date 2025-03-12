@@ -14,3 +14,9 @@ class AppDataTrackingChangedPressedEvent extends AppDataEvent {
 
   final DateTime trackingDate;
 }
+
+class AppDataAddedOrChangedEvent extends AppDataEvent {
+  AppDataAddedOrChangedEvent({required this.model});
+
+  final HiveObject model;
+}

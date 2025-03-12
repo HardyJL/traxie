@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:traxie/extensions/period_list_extension.dart';
 import 'package:traxie/model/journal_entry_model.dart';
@@ -14,8 +15,10 @@ part 'app_data_event.dart';
 part 'app_data_state.dart';
 
 class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
-  AppDataBloc()
-      : super(
+  AppDataBloc({
+    required this.periodModelRepository,
+    required this.entryModelRepository,
+  }) : super(
           const AppDataInitial(
             journalEntryModels: [],
             periodModels: [],
@@ -27,14 +30,17 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     on<AppDataTrackingChangedPressedEvent>(
       _onAppDataTrackingChangedPressedEvent,
     );
+    on<AppDataAddedOrChangedEvent>(
+      _onAppDataAddedOrChangedEvent,
+    );
   }
+  final JournalEntryModelRepository entryModelRepository;
+  final PeriodModelRepository periodModelRepository;
 
   FutureOr<void> _onAppDataInitializedEvent(
     AppDataInitializedEvent event,
     Emitter<AppDataBaseState> emit,
   ) {
-    final entryModelRepository = GetIt.I.get<JournalEntryModelRepository>();
-    final periodModelRepository = GetIt.I.get<PeriodModelRepository>();
     if (state.journalEntryModels.isEmpty && state.periodModels.isEmpty) {
       emit(
         AppDataReadyState(
@@ -50,8 +56,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
   }
 
   Future<void> clearTestData() async {
-    final entryModelRepository = GetIt.I.get<JournalEntryModelRepository>();
-    final periodModelRepository = GetIt.I.get<PeriodModelRepository>();
     await entryModelRepository.clearAllTrackingData();
     await periodModelRepository.clearAllTrackingData();
   }
@@ -71,5 +75,16 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
         currentModel: journalModel,
       ),
     );
+  }
+
+  FutureOr<void> _onAppDataAddedOrChangedEvent(
+    AppDataAddedOrChangedEvent event,
+    Emitter<AppDataBaseState> emit,
+  ) {
+    final model = event.model;
+
+    if (model is JournalEntryModel) {
+      entryModelRepository.addModel(model);
+    }
   }
 }
