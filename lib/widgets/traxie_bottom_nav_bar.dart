@@ -12,7 +12,7 @@ class TraxieBottomNavBar extends StatelessWidget {
         final navCubit = context.read<NavigationCubit>();
         return NavigationBar(
           selectedIndex:
-              context.read<NavigationCubit>().state.currentScreen.index,
+              context.read<NavigationCubit>().state.currentScreen.index % 3,
           onDestinationSelected: (value) {
             switch (value) {
               case 0:

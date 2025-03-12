@@ -53,22 +53,6 @@ final class AppDataSelectingDateState extends AppDataReadyState {
     required super.journalEntryModels,
     required super.periodModels,
     required this.currentModel,
-    this.isCurrentlyChanging = false,
-    this.directionForward = false,
   });
   final JournalEntryModel currentModel;
-  final bool isCurrentlyChanging;
-  final bool directionForward;
-  // void changeModel({bool forward = false}) {
-  //   final nextDate = currentModel.trackingDate.add(
-  //     Duration(days: forward ? 1 : -1),
-  //   );
-  //   final nextModel = journalEntryModels.firstWhere(
-  //     (e) => e.trackingDate == nextDate.withoutTime,
-  //     orElse: () => JournalEntryModel(
-  //       trackingDate: nextDate.withoutTime,
-  //       flowStrength: 0,
-  //     ),
-  //   );
-  // }
 }

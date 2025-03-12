@@ -61,17 +61,14 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     Emitter<AppDataBaseState> emit,
   ) {
     final journalModel = state.journalEntryModels
-            .where((e) => e.trackingDate == event.trackingDate)
+            .where((e) => e.trackingDate == event.trackingDate.withoutTime)
             .firstOrNull ??
         JournalEntryModel(trackingDate: event.trackingDate, flowStrength: 0);
-
     emit(
       AppDataSelectingDateState(
         journalEntryModels: state.journalEntryModels,
         periodModels: state.periodModels,
         currentModel: journalModel,
-        isCurrentlyChanging: event.isCurrentlyChanging,
-        directionForward: event.directionForward,
       ),
     );
   }

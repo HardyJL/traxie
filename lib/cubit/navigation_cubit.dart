@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -9,6 +7,7 @@ enum NavigationScreens {
   calendarScreen,
   mainScreen,
   historyScreen,
+  flowTrackingScreen,
 }
 
 class NavigationCubit extends Cubit<NavigationState> {
@@ -19,8 +18,7 @@ class NavigationCubit extends Cubit<NavigationState> {
           ),
         );
 
-    void updateState(NavigationScreens screen) {
-    log(screen.name);
+  void updateState(NavigationScreens screen) {
     emit(NavigationChangedState(screen));
   }
 }
