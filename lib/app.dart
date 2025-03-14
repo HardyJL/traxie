@@ -18,10 +18,11 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider<NavigationCubit>(create: (context) => NavigationCubit()),
         BlocProvider<AppDataBloc>(
-          create: (context) => AppDataBloc(
-            entryModelRepository: GetIt.I.get<JournalEntryModelRepository>(),
-            periodModelRepository: GetIt.I.get<PeriodModelRepository>(),
-          )..add(AppDataInitializedEvent()),
+          create:
+              (context) => AppDataBloc(
+                entryModelRepository: GetIt.I.get<JournalEntryModelRepository>(),
+                periodModelRepository: GetIt.I.get<PeriodModelRepository>(),
+              )..add(AppDataInitializedEvent()),
         ),
       ],
       child: MaterialApp(

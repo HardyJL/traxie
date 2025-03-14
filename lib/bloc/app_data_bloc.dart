@@ -14,24 +14,11 @@ part 'app_data_event.dart';
 part 'app_data_state.dart';
 
 class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
-  AppDataBloc({
-    required this.periodModelRepository,
-    required this.entryModelRepository,
-  }) : super(
-          const AppDataInitial(
-            journalEntryModels: [],
-            periodModels: [],
-          ),
-        ) {
-    on<AppDataInitializedEvent>(
-      _onAppDataInitializedEvent,
-    );
-    on<AppDataTrackingChangedPressedEvent>(
-      _onAppDataTrackingChangedPressedEvent,
-    );
-    on<AppDataAddedOrChangedEvent>(
-      _onAppDataAddedOrChangedEvent,
-    );
+  AppDataBloc({required this.periodModelRepository, required this.entryModelRepository})
+    : super(const AppDataInitial(journalEntryModels: [], periodModels: [])) {
+    on<AppDataInitializedEvent>(_onAppDataInitializedEvent);
+    on<AppDataTrackingChangedPressedEvent>(_onAppDataTrackingChangedPressedEvent);
+    on<AppDataAddedOrChangedEvent>(_onAppDataAddedOrChangedEvent);
   }
   final JournalEntryModelRepository entryModelRepository;
   final PeriodModelRepository periodModelRepository;
@@ -63,7 +50,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     AppDataTrackingChangedPressedEvent event,
     Emitter<AppDataBaseState> emit,
   ) {
-    final journalModel = state.journalEntryModels
+    final journalModel =
+        state.journalEntryModels
             .where((e) => e.trackingDate == event.trackingDate.withoutTime)
             .firstOrNull ??
         JournalEntryModel(trackingDate: event.trackingDate, flowStrength: 0);

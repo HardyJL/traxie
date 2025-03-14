@@ -11,8 +11,7 @@ class TraxieBottomNavBar extends StatelessWidget {
       builder: (context, state) {
         final navCubit = context.read<NavigationCubit>();
         return NavigationBar(
-          selectedIndex:
-              context.read<NavigationCubit>().state.currentScreen.index % 3,
+          selectedIndex: context.read<NavigationCubit>().state.currentScreen.index % 3,
           onDestinationSelected: (value) {
             switch (value) {
               case 0:
@@ -24,18 +23,9 @@ class TraxieBottomNavBar extends StatelessWidget {
             }
           },
           destinations: const [
-            NavigationDestination(
-              label: 'Calendar',
-              icon: Icon(Icons.crop_din_rounded),
-            ),
-            NavigationDestination(
-              label: 'Overview',
-              icon: Icon(Icons.circle_outlined),
-            ),
-            NavigationDestination(
-              label: 'History',
-              icon: Icon(Icons.line_style_rounded),
-            ),
+            NavigationDestination(label: 'Calendar', icon: Icon(Icons.crop_din_rounded)),
+            NavigationDestination(label: 'Overview', icon: Icon(Icons.circle_outlined)),
+            NavigationDestination(label: 'History', icon: Icon(Icons.line_style_rounded)),
           ],
         );
       },

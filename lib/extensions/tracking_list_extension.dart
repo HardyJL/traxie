@@ -1,4 +1,3 @@
-
 import 'package:calendar_view/calendar_view.dart';
 import 'package:traxie/model/journal_entry_model.dart';
 

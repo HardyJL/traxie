@@ -29,15 +29,15 @@ class StartScreen extends StatelessWidget {
                   height: 220,
                   width: 220,
                   child: Transform.rotate(
-                    angle: state.durationUntilEstimatedPeriod /
+                    angle:
+                        state.durationUntilEstimatedPeriod /
                         state.estimateCycleLength *
                         360 *
                         (math.pi / 180),
                     child: CircularProgressIndicator(
                       color: const Color.fromARGB(255, 164, 14, 57),
                       strokeWidth: 20,
-                      value: state.estimatePeriodLength /
-                          state.estimateCycleLength,
+                      value: state.estimatePeriodLength / state.estimateCycleLength,
                       backgroundColor: const Color.fromARGB(255, 194, 236, 255),
                     ),
                   ),
@@ -52,9 +52,7 @@ class StartScreen extends StatelessWidget {
                   'From ${DateFormat('dd.MM.yyyy').format(state.estimatedPeriodStartDate)} to ${DateFormat('dd.MM.yyyy').format(state.estimatedNextPeriodEndDate)}',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                const SizedBox(
-                  height: 12,
-                ),
+                const SizedBox(height: 12),
               ],
             ),
           ),

@@ -44,7 +44,5 @@ class PeriodModelAdapter extends TypeAdapter<PeriodModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PeriodModelAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is PeriodModelAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

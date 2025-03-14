@@ -12,19 +12,12 @@ class CalendarScreen extends StatelessWidget {
     return BlocListener<AppDataBloc, AppDataBaseState>(
       listener: (context, state) {
         if (state is AppDataSelectingDateState) {
-          context
-              .read<NavigationCubit>()
-              .updateState(NavigationScreens.flowTrackingScreen);
+          context.read<NavigationCubit>().updateState(NavigationScreens.flowTrackingScreen);
         }
       },
       child: const Padding(
         padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            SizedBox(height: 24),
-            TraxieCalendar(),
-          ],
-        ),
+        child: Column(children: [SizedBox(height: 24), TraxieCalendar()]),
       ),
     );
   }

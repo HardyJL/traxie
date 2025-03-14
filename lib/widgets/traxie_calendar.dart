@@ -19,15 +19,9 @@ class TraxieCalendar extends StatelessWidget {
       lastDay: DateTime.utc(2100, 3, 14),
       focusedDay: DateTime.now(),
       calendarStyle: CalendarStyle(
-        todayTextStyle: const TextStyle(
-          color: Colors.black,
-        ),
-        defaultTextStyle: const TextStyle(
-          color: Colors.black,
-        ),
-        outsideTextStyle: const TextStyle(
-          color: Colors.black,
-        ),
+        todayTextStyle: const TextStyle(color: Colors.black),
+        defaultTextStyle: const TextStyle(color: Colors.black),
+        outsideTextStyle: const TextStyle(color: Colors.black),
         markerSizeScale: 1,
         markersAnchor: 1,
         markerDecoration: const BoxDecoration(
@@ -36,10 +30,7 @@ class TraxieCalendar extends StatelessWidget {
         ),
         todayDecoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(
-            color: TraxieTheme.mainBlue,
-            width: 3,
-          ),
+          border: Border.all(color: TraxieTheme.mainBlue, width: 3),
         ),
       ),
       startingDayOfWeek: StartingDayOfWeek.monday,

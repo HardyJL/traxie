@@ -16,10 +16,7 @@ class JournalEntryModelAdapter extends TypeAdapter<JournalEntryModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return JournalEntryModel(
-      trackingDate: fields[0] as DateTime,
-      flowStrength: fields[1] as int,
-    );
+    return JournalEntryModel(trackingDate: fields[0] as DateTime, flowStrength: fields[1] as int);
   }
 
   @override

@@ -1,4 +1,3 @@
-
 import 'package:traxie/model/period_model.dart';
 
 extension PeriodListExtension on List<PeriodModel> {

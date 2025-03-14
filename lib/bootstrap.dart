@@ -24,12 +24,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     ..registerAdapter<JournalEntryModel>(JournalEntryModelAdapter())
     ..registerAdapter<PeriodModel>(PeriodModelAdapter());
 
-  final journalEntryBox =
-      await Hive.openBox<JournalEntryModel>('journalEntryBoxName');
+  final journalEntryBox = await Hive.openBox<JournalEntryModel>('journalEntryBoxName');
   final periodBox = await Hive.openBox<PeriodModel>('periodModelBoxName');
 
-  final journalEntryModelRepository =
-      JournalEntryModelRepository(hiveObjectBox: journalEntryBox);
+  final journalEntryModelRepository = JournalEntryModelRepository(hiveObjectBox: journalEntryBox);
   // await journalEntryModelRepository.init();
   await journalEntryModelRepository.setTestData(journalEntryTestData);
   final periodModelRepository = PeriodModelRepository(hiveObjectBox: periodBox);
@@ -37,12 +35,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   await periodModelRepository.setTestData(periodModelTestData);
 
   GetIt.I
-    ..registerSingletonAsync<JournalEntryModelRepository>(
-      () async => journalEntryModelRepository,
-    )
-    ..registerSingletonAsync<PeriodModelRepository>(
-      () async => periodModelRepository,
-    );
+    ..registerSingletonAsync<JournalEntryModelRepository>(() async => journalEntryModelRepository)
+    ..registerSingletonAsync<PeriodModelRepository>(() async => periodModelRepository);
   // GetIt.I.registerSingleton(
   //   () => registerRepository<JournalEntryModel>(
   //     JournalEntryModelRepository(boxName: 'journaEntry'),

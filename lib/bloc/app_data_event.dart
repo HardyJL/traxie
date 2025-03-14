@@ -8,9 +8,7 @@ class AppDataInitializedEvent extends AppDataEvent {}
 class AppDataChangedEvent extends AppDataEvent {}
 
 class AppDataTrackingChangedPressedEvent extends AppDataEvent {
-  AppDataTrackingChangedPressedEvent({
-    required this.trackingDate,
-  });
+  AppDataTrackingChangedPressedEvent({required this.trackingDate});
 
   final DateTime trackingDate;
 }

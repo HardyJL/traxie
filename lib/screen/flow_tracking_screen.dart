@@ -22,28 +22,29 @@ class FlowTrackingScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     IconButton(
-                      onPressed: () => bloc.add(
-                        AppDataTrackingChangedPressedEvent(
-                          trackingDate: state.currentModel.trackingDate.add(
-                            const Duration(days: -1),
+                      onPressed:
+                          () => bloc.add(
+                            AppDataTrackingChangedPressedEvent(
+                              trackingDate: state.currentModel.trackingDate.add(
+                                const Duration(days: -1),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
                       icon: const Icon(Icons.arrow_back),
                     ),
                     Text(
-                      DateFormat.yMMMd()
-                          .format(state.currentModel.trackingDate),
+                      DateFormat.yMMMd().format(state.currentModel.trackingDate),
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     IconButton(
-                      onPressed: () => bloc.add(
-                        AppDataTrackingChangedPressedEvent(
-                          trackingDate: state.currentModel.trackingDate.add(
-                            const Duration(days: 1),
+                      onPressed:
+                          () => bloc.add(
+                            AppDataTrackingChangedPressedEvent(
+                              trackingDate: state.currentModel.trackingDate.add(
+                                const Duration(days: 1),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
                       icon: const Icon(Icons.arrow_forward),
                     ),
                   ],
@@ -55,9 +56,7 @@ class FlowTrackingScreen extends StatelessWidget {
           );
         }
 
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }
