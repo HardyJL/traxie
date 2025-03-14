@@ -68,14 +68,26 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     AppDataAddedOrChangedEvent event,
     Emitter<AppDataBaseState> emit,
   ) {
-    //TODO: add some kind of logic to load a periodModel at this point
-    if (state.journalEntryModels.containsDate(event.entryModel.trackingDate)) {
-      entryModelRepository.updateModel(event.entryModel);
+    final JournalEntryModel eventModel = event.entryModel;
+    final bool containsEventModel = state.journalEntryModels.containsDate(eventModel.trackingDate);
+
+    if (eventModel.flowStrength == 0) {
+      if (containsEventModel) {
+        entryModelRepository.deleteTrackingData(eventModel.key);
+        state.journalEntryModels.remove(eventModel);
+      }
+    } else {
+      if (containsEventModel) {
+        entryModelRepository.updateModel(eventModel);
+        state.journalEntryModels[state.journalEntryModels.indexOf(eventModel)] = eventModel;
+      } else {
+        entryModelRepository.addModel(eventModel);
+        state.journalEntryModels.add(eventModel);
+      }
     }
-    entryModelRepository.addModel(event.entryModel);
     emit(
       AppDataReadyState(
-        journalEntryModels: state.journalEntryModels..add(event.entryModel),
+        journalEntryModels: state.journalEntryModels,
         periodModels: state.periodModels,
       ),
     );

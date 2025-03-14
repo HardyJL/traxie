@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:traxie/bloc/app_data_bloc.dart';
+import 'package:traxie/extensions/tracking_list_extension.dart';
+import 'package:traxie/repository/journal_entry_model_repository.dart';
 
 class TraxieAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TraxieAppBar({required this.title, super.key, this.actions});
@@ -21,39 +24,47 @@ class TraxieAppBar extends StatelessWidget implements PreferredSizeWidget {
               onPressed: () async {
                 final bloc = context.read<AppDataBloc>();
                 final state = bloc.state;
+                final repository = GetIt.I.get<JournalEntryModelRepository>();
                 await showDialog<void>(
                   context: context,
                   builder:
                       (_) => AlertDialog.adaptive(
-                        content: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'Journal Conut ${state.journalEntryModels.length} - Period Count ${state.periodModels.length}',
-                            ),
-                            const SizedBox(height: 24),
-                            ElevatedButton(
-                              onPressed: bloc.clearTestData,
-                              child: const Text('Clear'),
-                            ),
-                            const SizedBox(height: 24),
-                            Text(
-                              'Estimated Cycle Length: ${state.estimateAverage((e) => e.cycleLength)}',
-                            ),
-                            const SizedBox(height: 24),
-                            Text(
-                              'Estimated Period Length: ${state.estimateAverage((e) => e.periodLength)}',
-                            ),
-                            const SizedBox(height: 24),
-                            Text(
-                              'durationUntilEstimatedPeriod: ${state.durationUntilEstimatedPeriod}',
-                            ),
-                            const SizedBox(height: 24),
-                            Text('Estimated Period Start Date: ${state.estimatedPeriodStartDate}'),
-                            const SizedBox(height: 24),
-                            Text('Estimated Period End Date: ${state.estimatedNextPeriodEndDate}'),
-                            const SizedBox(height: 24),
-                          ],
+                        content: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                'Journal Conut ${state.journalEntryModels.length} - Period Count ${state.periodModels.length}',
+                              ),
+                              const SizedBox(height: 24),
+                              ElevatedButton(
+                                onPressed: bloc.clearTestData,
+                                child: const Text('Clear'),
+                              ),
+                              const SizedBox(height: 24),
+                              Text(
+                                'Estimated Cycle Length: ${state.estimateAverage((e) => e.cycleLength)}',
+                              ),
+                              const SizedBox(height: 24),
+                              Text(
+                                'Estimated Period Length: ${state.estimateAverage((e) => e.periodLength)}',
+                              ),
+                              const SizedBox(height: 24),
+                              Text(
+                                'durationUntilEstimatedPeriod: ${state.durationUntilEstimatedPeriod}',
+                              ),
+                              const SizedBox(height: 24),
+                              Text(
+                                'Estimated Period Start Date: ${state.estimatedPeriodStartDate}',
+                              ),
+                              const SizedBox(height: 24),
+                              Text(
+                                'Estimated Period End Date: ${state.estimatedNextPeriodEndDate}',
+                              ),
+                              const SizedBox(height: 24),
+                              Text(repository.getAllModels().flatten()),
+                            ],
+                          ),
                         ),
                       ),
                 );

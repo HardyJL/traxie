@@ -5,4 +5,8 @@ extension TrackingListExtension on List<JournalEntryModel> {
   bool containsDate(DateTime date) {
     return indexWhere((e) => e.trackingDate.withoutTime.isAtSameMomentAs(date.withoutTime)) != -1;
   }
+
+  String flatten() {
+    return this.map((e) => e.toString()).join('\n');
+  }
 }

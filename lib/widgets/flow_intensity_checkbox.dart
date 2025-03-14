@@ -12,6 +12,7 @@ class FlowIntensityCheckbox extends StatelessWidget {
         if (state is! AppDataSelectingDateState) {
           return const CircularProgressIndicator();
         }
+        final bloc = context.read<AppDataBloc>();
         return Column(
           children: [
             CheckboxListTile(

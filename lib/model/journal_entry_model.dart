@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 part 'journal_entry_model.g.dart';
 
 @HiveType(typeId: 1)
@@ -24,6 +25,6 @@ class JournalEntryModel extends HiveObject {
 
   @override
   String toString() {
-    return 'FlowTrackingModel(trackingDate: $trackingDate, flowStrength: $flowStrength)';
+    return 'Flow - ${DateFormat('dd.MM.yyyy').format(trackingDate)} - ($flowStrength)';
   }
 }
