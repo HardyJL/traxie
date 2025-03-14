@@ -16,7 +16,7 @@ class AppDataTrackingChangedPressedEvent extends AppDataEvent {
 }
 
 class AppDataAddedOrChangedEvent extends AppDataEvent {
-  AppDataAddedOrChangedEvent({required this.model});
+  AppDataAddedOrChangedEvent({required this.entryModel});
 
-  final HiveObject model;
+  final JournalEntryModel entryModel;
 }

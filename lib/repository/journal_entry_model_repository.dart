@@ -3,5 +3,5 @@ import 'package:traxie/repository/hive_database_repository.dart';
 
 class JournalEntryModelRepository
     extends HiveDatabaseRepository<JournalEntryModel> {
-  JournalEntryModelRepository({required super.currentBox});
+  JournalEntryModelRepository({required super.hiveObjectBox});
 }

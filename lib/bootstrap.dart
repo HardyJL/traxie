@@ -29,10 +29,10 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   final periodBox = await Hive.openBox<PeriodModel>('periodModelBoxName');
 
   final journalEntryModelRepository =
-      JournalEntryModelRepository(currentBox: journalEntryBox);
+      JournalEntryModelRepository(hiveObjectBox: journalEntryBox);
   // await journalEntryModelRepository.init();
   await journalEntryModelRepository.setTestData(journalEntryTestData);
-  final periodModelRepository = PeriodModelRepository(currentBox: periodBox);
+  final periodModelRepository = PeriodModelRepository(hiveObjectBox: periodBox);
   // await periodModelRepository.init();
   await periodModelRepository.setTestData(periodModelTestData);
 
