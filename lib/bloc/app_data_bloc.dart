@@ -72,23 +72,27 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     final bool containsEventModel = state.journalEntryModels.containsDate(eventModel.trackingDate);
 
     if (eventModel.flowStrength == 0) {
+      print('flowStrength == 0');
       if (containsEventModel) {
         entryModelRepository.deleteTrackingData(eventModel.key);
         state.journalEntryModels.remove(eventModel);
       }
     } else {
+      print('flowStrength != 0');
       if (containsEventModel) {
         entryModelRepository.updateModel(eventModel);
         state.journalEntryModels[state.journalEntryModels.indexOf(eventModel)] = eventModel;
       } else {
+        print('notContaining');
         entryModelRepository.addModel(eventModel);
         state.journalEntryModels.add(eventModel);
       }
     }
     emit(
-      AppDataReadyState(
+      AppDataSelectingDateState(
         journalEntryModels: state.journalEntryModels,
         periodModels: state.periodModels,
+        currentModel: event.entryModel,
       ),
     );
   }

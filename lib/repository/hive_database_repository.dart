@@ -18,6 +18,7 @@ class HiveDatabaseRepository<T extends HiveObject> {
   }
 
   Future<void> updateModel(T model) async {
+    print(model);
     await hiveObjectBox.put(model.key, model);
   }
 
@@ -29,7 +30,7 @@ class HiveDatabaseRepository<T extends HiveObject> {
     return hiveObjectBox.get(key)!;
   }
 
-  Future<void> deleteTrackingData(String key) async {
+  Future<void> deleteTrackingData(int key) async {
     await hiveObjectBox.delete(key);
   }
 

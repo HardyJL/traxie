@@ -4,7 +4,7 @@ part 'journal_entry_model.g.dart';
 
 @HiveType(typeId: 1)
 class JournalEntryModel extends HiveObject {
-  JournalEntryModel({required this.trackingDate, required this.flowStrength})
+  JournalEntryModel({required this.trackingDate, required this.flowStrength, this.key = 0})
     : assert(flowStrength >= 0 && flowStrength <= 4, 'Strength must be between 0 and 4');
 
   factory JournalEntryModel.fromJson(Map<String, dynamic> json) {
@@ -13,6 +13,7 @@ class JournalEntryModel extends HiveObject {
       flowStrength: json['flowStrength'] as int,
     );
   }
+  int key;
   @HiveField(0)
   final DateTime trackingDate;
 
@@ -26,5 +27,12 @@ class JournalEntryModel extends HiveObject {
   @override
   String toString() {
     return 'Flow - ${DateFormat('dd.MM.yyyy').format(trackingDate)} - ($flowStrength)';
+  }
+
+  JournalEntryModel copyWith({DateTime? date, int? value}) {
+    return JournalEntryModel(
+      trackingDate: date ?? trackingDate,
+      flowStrength: value ?? flowStrength,
+    );
   }
 }
