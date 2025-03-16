@@ -5,17 +5,10 @@ class HiveDatabaseRepository<T extends HiveObject> {
 
   final Box<T> hiveObjectBox;
 
-  Future<void> setTestData(List<T> testData) async {
-    if (hiveObjectBox.isEmpty) {
-      for (final data in testData) {
-        await hiveObjectBox.add(data);
-      }
-    }
-  }
+  Future<void> setTestData(List<T> testData) =>
+      throw UnimplementedError("Try calling the specific repository");
 
-  Future<void> addModel(T model) async {
-    await hiveObjectBox.add(model);
-  }
+  Future<void> addModel(T model) => throw UnimplementedError("Try calling the specific repository");
 
   Future<void> updateModel(T model) async {
     print(model);

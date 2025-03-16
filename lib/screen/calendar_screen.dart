@@ -15,7 +15,7 @@ class CalendarScreen extends StatelessWidget {
           context.read<NavigationCubit>().updateState(NavigationScreens.flowTrackingScreen);
         }
       },
-      child: const Padding(
+      child: Padding(
         padding: EdgeInsets.all(16),
         child: Column(children: [SizedBox(height: 24), TraxieCalendar()]),
       ),

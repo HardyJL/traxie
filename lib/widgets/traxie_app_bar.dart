@@ -41,6 +41,8 @@ class TraxieAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 onPressed: bloc.clearTestData,
                                 child: const Text('Clear'),
                               ),
+                              if (state is AppDataSelectingDateState)
+                                Text(state.currentModel.toString()),
                               const SizedBox(height: 24),
                               Text(
                                 'Estimated Cycle Length: ${state.estimateAverage((e) => e.cycleLength)}',

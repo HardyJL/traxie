@@ -10,10 +10,10 @@ class FlowIntensityCheckbox extends StatefulWidget {
 }
 
 class _FlowIntensityCheckboxState extends State<FlowIntensityCheckbox> {
-  int currentValue = 0;
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AppDataBloc>();
+    int currentValue = (bloc.state as AppDataSelectingDateState).currentModel.flowStrength;
     return Column(
       children: [
         CheckboxListTile(

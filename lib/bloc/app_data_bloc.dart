@@ -52,9 +52,10 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
   ) {
     final journalModel =
         state.journalEntryModels
-            .where((e) => e.trackingDate == event.trackingDate.withoutTime)
+            .where((e) => e.trackingDate.withoutTime == event.trackingDate.withoutTime)
             .firstOrNull ??
         JournalEntryModel(trackingDate: event.trackingDate, flowStrength: 0);
+    print(journalModel);
     emit(
       AppDataSelectingDateState(
         journalEntryModels: state.journalEntryModels,
@@ -88,6 +89,8 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
         state.journalEntryModels.add(eventModel);
       }
     }
+    // pinrt all values
+
     emit(
       AppDataSelectingDateState(
         journalEntryModels: state.journalEntryModels,

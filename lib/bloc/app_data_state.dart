@@ -21,6 +21,7 @@ sealed class AppDataBaseState {
       estimatedPeriodStartDate.difference(DateTime.now().withoutTime).inDays;
 
   List<String> generateEventsForTracking(DateTime day) {
+    print('called');
     if (journalEntryModels.any((e) => e.trackingDate == day.withoutTime)) {
       return [''];
     }
