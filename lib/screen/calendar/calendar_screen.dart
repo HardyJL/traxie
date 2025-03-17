@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:traxie/bloc/app_data_bloc.dart';
 import 'package:traxie/cubit/navigation_cubit.dart';
-import 'package:traxie/widgets/traxie_calendar.dart';
+import 'package:traxie/screen/calendar/cubit/calendar_cubit.dart';
+import 'package:traxie/screen/calendar/traxie_calendar.dart';
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
@@ -17,7 +18,12 @@ class CalendarScreen extends StatelessWidget {
       },
       child: Padding(
         padding: EdgeInsets.all(16),
-        child: Column(children: [SizedBox(height: 24), TraxieCalendar()]),
+        child: Column(
+          children: [
+            SizedBox(height: 24),
+            BlocProvider<CalendarCubit>(create: (ctx) => CalendarCubit(), child: TraxieCalendar()),
+          ],
+        ),
       ),
     );
   }
