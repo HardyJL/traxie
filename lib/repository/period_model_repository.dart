@@ -20,7 +20,6 @@ class PeriodModelRepository extends HiveDatabaseRepository<PeriodModel> {
 
   @override
   List<PeriodModel> getAllModels() {
-    return hiveObjectBox.values.toList()
-      ..sort((a, b) => a.periodStartDate.compareTo(b.periodStartDate));
+    return hiveObjectBox.values.toList()..sort();
   }
 }

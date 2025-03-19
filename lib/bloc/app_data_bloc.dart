@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:meta/meta.dart';
+import 'package:traxie/extensions/date_extensions.dart';
 import 'package:traxie/extensions/period_list_extension.dart';
 import 'package:traxie/extensions/tracking_list_extension.dart';
 import 'package:traxie/model/journal_entry_model.dart';
@@ -72,17 +74,23 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     final JournalEntryModel eventModel = event.entryModel;
     final bool containsEventModel = state.journalEntryModels.containsDate(eventModel.trackingDate);
 
+    print(eventModel.trackingDate);
     if (eventModel.flowStrength == 0) {
       print('flowStrength == 0');
+
       if (containsEventModel) {
-        entryModelRepository.deleteTrackingData(eventModel.key);
-        state.journalEntryModels.remove(eventModel);
+        print('contains');
+
+        entryModelRepository.deleteTrackingData(eventModel.trackingDate.toReadableString());
+        print(state.journalEntryModels.any((e) => e == eventModel));
+        print(state.journalEntryModels.remove(eventModel));
       }
     } else {
       print('flowStrength != 0');
       if (containsEventModel) {
         entryModelRepository.updateModel(eventModel);
-        state.journalEntryModels[state.journalEntryModels.indexOf(eventModel)] = eventModel;
+        //TODO: fix
+        // state.journalEntryModels[state.journalEntryModels.indexOf(eventModel)] = eventModel;
       } else {
         print('notContaining');
         entryModelRepository.addModel(eventModel);

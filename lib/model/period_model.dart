@@ -1,9 +1,10 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:hive/hive.dart';
 
 part 'period_model.g.dart';
 
 @HiveType(typeId: 10)
-class PeriodModel extends HiveObject {
+class PeriodModel extends HiveObject implements Comparable<PeriodModel> {
   PeriodModel({
     required this.cycleLength,
     required this.periodLength,
@@ -23,5 +24,10 @@ class PeriodModel extends HiveObject {
   @override
   String toString() {
     return 'PeriodModel(periodStartDate: $periodStartDate, periodEndDate: $periodEndDate, cycleLength: $cycleLength, periodLength: $periodLength)';
+  }
+
+  @override
+  int compareTo(PeriodModel other) {
+    return this.periodStartDate.withoutTime.compareTo(other.periodStartDate.withoutTime);
   }
 }

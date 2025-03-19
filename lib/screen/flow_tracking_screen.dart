@@ -50,7 +50,15 @@ class FlowTrackingScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 32),
-                const FlowIntensityCheckbox(),
+                FlowIntensityCheckbox(
+                  currentValue: state.currentModel.flowStrength,
+                  onChanged:
+                      (value) => bloc.add(
+                        AppDataAddedOrChangedEvent(
+                          entryModel: state.currentModel.copyWith(value: value),
+                        ),
+                      ),
+                ),
               ],
             ),
           );

@@ -1,33 +1,13 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:traxie/bloc/app_data_bloc.dart';
 import 'package:traxie/extensions/date_extensions.dart';
-// import 'package:traxie/bloc/app_data_bloc.dart';
 import 'package:traxie/model/journal_entry_model.dart';
 import 'package:traxie/screen/calendar/cubit/calendar_cubit.dart';
 import 'package:traxie/theme_colors.dart';
 
 class TraxieCalendar extends StatelessWidget {
-  // late DateTime _currentMonth;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _currentMonth = DateTime(initialDate.year, initialDate.month);
-  // }
-  //
-  // void _previousMonth() {
-  //   setState(() {
-  //     _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
-  //   });
-  // }
-  //
-  // void _nextMonth() {
-  //   setState(() {
-  //     _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<CalendarCubit>();
@@ -60,6 +40,7 @@ class TraxieCalendar extends StatelessWidget {
             CalendarGrid(
               currentBaseState: state,
               models: context.read<AppDataBloc>().state.journalEntryModels,
+              cubit: cubit,
             ),
           ],
         );
@@ -96,8 +77,9 @@ class WeekdayHeader extends StatelessWidget {
 }
 
 class CalendarGrid extends StatelessWidget {
-  CalendarGrid({super.key, required this.currentBaseState, this.models});
+  CalendarGrid({super.key, required this.currentBaseState, this.models, required this.cubit});
 
+  final CalendarCubit cubit;
   final CalendarState currentBaseState;
   final List<JournalEntryModel>? models;
   // // Get the first day of the month
@@ -107,16 +89,16 @@ class CalendarGrid extends StatelessWidget {
     DateTime date, {
     List<JournalEntryModel>? models = null,
     required bool isCurrentMonth,
+    required BuildContext ctx,
   }) {
     final isPeriodDay =
         models != null ? models.any((e) => e.trackingDate.isAtSameMomentAs(date)) : false;
 
-    final isToday = date.isAtSameMomentAs(DateTime.now());
+    final isToday = date.compareWithoutTime(DateTime.now());
 
     return GestureDetector(
-      onTap: () {
-        print('selected');
-      },
+      onTap:
+          () => ctx.read<AppDataBloc>().add(AppDataTrackingChangedPressedEvent(trackingDate: date)),
       child: Container(
         width: 40,
         height: 40,
@@ -140,7 +122,7 @@ class CalendarGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime currentDate = currentBaseState.currentBaseDate;
+    final DateTime currentDate = currentBaseState.currentBaseDate.withoutTime;
     // Calculate offset to start the calendar (considering Monday s the first day of the week)
 
     // Get the number of days in the month
@@ -167,6 +149,7 @@ class CalendarGrid extends StatelessWidget {
           day,
           DateTime(previousMonth.year, previousMonth.month, day),
           isCurrentMonth: false,
+          ctx: context,
         ),
       );
     }
@@ -179,6 +162,7 @@ class CalendarGrid extends StatelessWidget {
           DateTime(currentDate.year, currentDate.month, i),
           isCurrentMonth: true,
           models: models,
+          ctx: context,
         ),
       );
     }
@@ -188,7 +172,12 @@ class CalendarGrid extends StatelessWidget {
 
     for (int i = 1; i <= daysFromNextMonth; i++) {
       dayWidgets.add(
-        _buildDayCell(i, DateTime(nextMonth.year, nextMonth.month, i), isCurrentMonth: false),
+        _buildDayCell(
+          i,
+          DateTime(nextMonth.year, nextMonth.month, i),
+          isCurrentMonth: false,
+          ctx: context,
+        ),
       );
     }
 

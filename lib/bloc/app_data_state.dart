@@ -19,14 +19,6 @@ sealed class AppDataBaseState {
       estimatedPeriodStartDate.add(Duration(days: estimatePeriodLength));
   int get durationUntilEstimatedPeriod =>
       estimatedPeriodStartDate.difference(DateTime.now().withoutTime).inDays;
-
-  List<String> generateEventsForTracking(DateTime day) {
-    print('called');
-    if (journalEntryModels.any((e) => e.trackingDate == day.withoutTime)) {
-      return [''];
-    }
-    return [];
-  }
 }
 
 final class AppDataInitial extends AppDataBaseState {

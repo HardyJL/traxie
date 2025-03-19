@@ -15,6 +15,7 @@ class CalendarState {
 
   factory CalendarState.initial() {
     final now = DateTime.now();
-    return CalendarState(initialDate: now, currentBaseDate: now);
+    final firstDate = DateTime(now.year, now.month, 1);
+    return CalendarState(initialDate: firstDate, currentBaseDate: firstDate);
   }
 }

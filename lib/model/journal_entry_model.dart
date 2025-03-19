@@ -1,9 +1,10 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 part 'journal_entry_model.g.dart';
 
 @HiveType(typeId: 1)
-class JournalEntryModel extends HiveObject {
+class JournalEntryModel extends HiveObject implements Comparable<JournalEntryModel> {
   JournalEntryModel({required this.trackingDate, required this.flowStrength, this.key = 0})
     : assert(flowStrength >= 0 && flowStrength <= 4, 'Strength must be between 0 and 4');
 
@@ -20,10 +21,6 @@ class JournalEntryModel extends HiveObject {
   @HiveField(1)
   int flowStrength;
 
-  Map<String, dynamic> toJson() {
-    return {'trackingDate': trackingDate.toLocal().toIso8601String(), 'flowStrength': flowStrength};
-  }
-
   @override
   String toString() {
     return 'Flow - ${DateFormat('dd.MM.yyyy').format(trackingDate)} - ($flowStrength)';
@@ -34,5 +31,18 @@ class JournalEntryModel extends HiveObject {
       trackingDate: date ?? trackingDate,
       flowStrength: value ?? flowStrength,
     );
+  }
+
+  @override
+  int compareTo(JournalEntryModel other) {
+    return this.trackingDate.withoutTime.compareTo(other.trackingDate.withoutTime);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is JournalEntryModel) {
+      return this.trackingDate.compareWithoutTime(other.trackingDate);
+    }
+    return false;
   }
 }

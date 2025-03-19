@@ -23,7 +23,7 @@ class HiveDatabaseRepository<T extends HiveObject> {
     return hiveObjectBox.get(key)!;
   }
 
-  Future<void> deleteTrackingData(int key) async {
+  Future<void> deleteTrackingData(String key) async {
     await hiveObjectBox.delete(key);
   }
 
