@@ -13,27 +13,41 @@ class ScreenShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const TraxieAppBar(title: 'Traxie'),
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-        child: BlocBuilder<NavigationCubit, NavigationState>(
-          builder: (context, state) {
-            switch (state.currentScreen.index) {
-              case 0:
-                return const CalendarScreen();
-              case 1:
-                return const StartScreen();
-              case 2:
-                return const HistoryScreen();
-              case 3:
-                return const FlowTrackingScreen();
-            }
-            return Container();
-          },
+    final navigationCubit = context.read<NavigationCubit>();
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (_, _) async {
+        switch (navigationCubit.state.currentScreen) {
+          case NavigationScreens.mainScreen:
+            Navigator.of(context).pop();
+          case NavigationScreens.flowTrackingScreen:
+            navigationCubit.updateState(NavigationScreens.calendarScreen);
+          default:
+            navigationCubit.updateState(NavigationScreens.mainScreen);
+        }
+      },
+      child: Scaffold(
+        appBar: const TraxieAppBar(title: 'Traxie'),
+        body: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+          child: BlocBuilder<NavigationCubit, NavigationState>(
+            builder: (context, state) {
+              switch (state.currentScreen.index) {
+                case 0:
+                  return const CalendarScreen();
+                case 1:
+                  return const StartScreen();
+                case 2:
+                  return const HistoryScreen();
+                case 3:
+                  return const FlowTrackingScreen();
+              }
+              return Container();
+            },
+          ),
         ),
+        bottomNavigationBar: const TraxieBottomNavBar(),
       ),
-      bottomNavigationBar: const TraxieBottomNavBar(),
     );
   }
 }
