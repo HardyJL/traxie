@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:traxie/cubit/navigation_cubit.dart';
+import 'package:traxie/l10n/l10n.dart';
 import 'package:traxie/screen/calendar/calendar_screen.dart';
 import 'package:traxie/screen/flow_tracking_screen.dart';
 import 'package:traxie/screen/history_screen.dart';
@@ -27,7 +28,7 @@ class ScreenShell extends StatelessWidget {
         }
       },
       child: Scaffold(
-        appBar: const TraxieAppBar(title: 'Traxie'),
+        appBar: TraxieAppBar(title: AppLocalizations.of(context).appBarTitle),
         body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
           child: BlocBuilder<NavigationCubit, NavigationState>(

@@ -1,8 +1,9 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:traxie/bloc/app_data_bloc.dart';
+import 'package:traxie/extensions/date_extensions.dart';
+import 'package:traxie/l10n/l10n.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -20,7 +21,7 @@ class StartScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 24),
                 Text(
-                  'Your next period is estimated to be in ${state.durationUntilEstimatedPeriod} days',
+                  AppLocalizations.of(context).nextPeriod(state.durationUntilEstimatedPeriod),
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -44,12 +45,15 @@ class StartScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 36),
                 Text(
-                  'And should last about ${state.estimatePeriodLength} days',
+                  AppLocalizations.of(context).daysLasting(state.estimatePeriodLength),
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'From ${DateFormat('dd.MM.yyyy').format(state.estimatedPeriodStartDate)} to ${DateFormat('dd.MM.yyyy').format(state.estimatedNextPeriodEndDate)}',
+                  AppLocalizations.of(context).fromToDate(
+                    state.estimatedPeriodStartDate.asReadableString,
+                    state.estimatedNextPeriodEndDate.asReadableString,
+                  ),
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 12),

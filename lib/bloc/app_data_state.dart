@@ -18,7 +18,7 @@ sealed class AppDataBaseState {
   DateTime get estimatedNextPeriodEndDate =>
       estimatedPeriodStartDate.add(Duration(days: estimatePeriodLength));
   int get durationUntilEstimatedPeriod =>
-      estimatedPeriodStartDate.difference(DateTime.now().withoutTime).inDays;
+      estimatedPeriodStartDate.difference(GetIt.I.get<DateTime>()).inDays;
 }
 
 final class AppDataInitial extends AppDataBaseState {

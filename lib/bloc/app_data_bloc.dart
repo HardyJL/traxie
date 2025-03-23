@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
-import 'package:calendar_view/calendar_view.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:traxie/extensions/date_extensions.dart';
 import 'package:traxie/extensions/period_list_extension.dart';
@@ -54,7 +54,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
   ) {
     final journalModel =
         state.journalEntryModels
-            .where((e) => e.trackingDate.withoutTime == event.trackingDate.withoutTime)
+            .where((e) => e.trackingDate.noTime == event.trackingDate.noTime)
             .firstOrNull ??
         JournalEntryModel(trackingDate: event.trackingDate, flowStrength: 0);
     print(journalModel);
@@ -71,40 +71,60 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     AppDataAddedOrChangedEvent event,
     Emitter<AppDataBaseState> emit,
   ) {
-    final JournalEntryModel eventModel = event.entryModel;
-    final bool containsEventModel = state.journalEntryModels.containsDate(eventModel.trackingDate);
-
-    print(eventModel.trackingDate);
-    if (eventModel.flowStrength == 0) {
-      print('flowStrength == 0');
-
-      if (containsEventModel) {
-        print('contains');
-
-        entryModelRepository.deleteTrackingData(eventModel.trackingDate.toReadableString());
-        print(state.journalEntryModels.any((e) => e == eventModel));
-        print(state.journalEntryModels.remove(eventModel));
+    final List<JournalEntryModel> _updatedJournalEntryList = state.journalEntryModels;
+    final List<PeriodModel> _updatedPeriodList = state.periodModels;
+    final JournalEntryModel _eventModel = event.entryModel;
+    final bool _containsEventModel = _updatedJournalEntryList.containsDate(
+      _eventModel.trackingDate,
+    );
+    if (_eventModel.flowStrength == 0) {
+      if (_containsEventModel) {
+        entryModelRepository.deleteTrackingData(_eventModel.trackingDate.asReadableString);
       }
     } else {
-      print('flowStrength != 0');
-      if (containsEventModel) {
-        entryModelRepository.updateModel(eventModel);
-        //TODO: fix
-        // state.journalEntryModels[state.journalEntryModels.indexOf(eventModel)] = eventModel;
+      if (_containsEventModel) {
+        entryModelRepository.updateModel(_eventModel);
+        _updatedJournalEntryList[_updatedJournalEntryList.indexOf(_eventModel)] = _eventModel;
       } else {
-        print('notContaining');
-        entryModelRepository.addModel(eventModel);
-        state.journalEntryModels.add(eventModel);
+        entryModelRepository.addModel(_eventModel);
+        if (!_eventModel.trackingDate.isDayAfter(_updatedJournalEntryList.last.trackingDate)) {
+          final _newPeriodModel = createNextPeriod(_eventModel.trackingDate);
+          if (_newPeriodModel != null) {
+            _updatedPeriodList.add(_newPeriodModel);
+          }
+        }
+        _updatedJournalEntryList.add(_eventModel);
       }
     }
-    // pinrt all values
-
     emit(
       AppDataSelectingDateState(
-        journalEntryModels: state.journalEntryModels,
-        periodModels: state.periodModels,
-        currentModel: event.entryModel,
+        journalEntryModels: _updatedJournalEntryList,
+        periodModels: _updatedPeriodList,
+        currentModel: _eventModel,
       ),
+    );
+  }
+
+  PeriodModel? createNextPeriod(DateTime newPeriodStart) {
+    if (state.journalEntryModels.isEmpty) return null;
+
+    late DateTime _periodStartDate;
+    final DateTime _periodEndDate = state.journalEntryModels.last.trackingDate;
+    final _reversedList = state.journalEntryModels.reversed.toList();
+
+    for (var i = 0; i < _reversedList.length - 1; i++) {
+      final _currentTrackingModel = _reversedList[i];
+      if (!_currentTrackingModel.trackingDate.isDayAfter(_reversedList[i + 1].trackingDate)) {
+        _periodStartDate = _currentTrackingModel.trackingDate;
+        break;
+      }
+    }
+
+    return PeriodModel(
+      cycleLength: _periodStartDate.difference(newPeriodStart).inDays,
+      periodLength: _periodStartDate.difference(_periodEndDate).inDays,
+      periodStartDate: _periodStartDate,
+      periodEndDate: _periodEndDate,
     );
   }
 }

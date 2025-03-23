@@ -6,7 +6,7 @@ class PeriodModelRepository extends HiveDatabaseRepository<PeriodModel> {
   PeriodModelRepository({required super.hiveObjectBox});
   @override
   Future<void> addModel(PeriodModel model) {
-    return super.hiveObjectBox.put(model.periodStartDate.toReadableString(), model);
+    return super.hiveObjectBox.put(model.periodStartDate.asReadableString, model);
   }
 
   @override

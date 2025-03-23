@@ -7,7 +7,7 @@ class JournalEntryModelRepository extends HiveDatabaseRepository<JournalEntryMod
 
   @override
   Future<void> addModel(JournalEntryModel model) {
-    return hiveObjectBox.put(model.trackingDate.toReadableString(), model);
+    return hiveObjectBox.put(model.trackingDate.asReadableString, model);
   }
 
   @override

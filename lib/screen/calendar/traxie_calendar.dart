@@ -1,6 +1,7 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:traxie/bloc/app_data_bloc.dart';
 import 'package:traxie/extensions/date_extensions.dart';
 import 'package:traxie/model/journal_entry_model.dart';
@@ -94,7 +95,7 @@ class CalendarGrid extends StatelessWidget {
     final isPeriodDay =
         models != null ? models.any((e) => e.trackingDate.isAtSameMomentAs(date)) : false;
 
-    final isToday = date.compareWithoutTime(DateTime.now());
+    final isToday = date.compareWithoutTime(GetIt.I.get<DateTime>());
 
     return GestureDetector(
       onTap:
@@ -122,7 +123,7 @@ class CalendarGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime currentDate = currentBaseState.currentBaseDate.withoutTime;
+    final DateTime currentDate = currentBaseState.currentBaseDate.noTime;
     // Calculate offset to start the calendar (considering Monday s the first day of the week)
 
     // Get the number of days in the month

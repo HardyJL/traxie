@@ -1,6 +1,7 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:traxie/extensions/date_extensions.dart';
 part 'journal_entry_model.g.dart';
 
 @HiveType(typeId: 1)
@@ -35,7 +36,7 @@ class JournalEntryModel extends HiveObject implements Comparable<JournalEntryMod
 
   @override
   int compareTo(JournalEntryModel other) {
-    return this.trackingDate.withoutTime.compareTo(other.trackingDate.withoutTime);
+    return this.trackingDate.noTime.compareTo(other.trackingDate.noTime);
   }
 
   @override

@@ -1,7 +1,50 @@
 {
     "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
+    "appBarTitle":"traxie",
+    "calendarNav":"Calendar",
+    "overviewNav":"Overview",
+    "historyNav":"History",
+    "nextPeriod": "Your next period is estimated to be in {daysamount} days",
+    "@nextPeriod": {
+        "placeholders": {
+            "daysamount": {
+                "type": "int"
+            }
+        }
+    },
+    "currentPeriod": "You are currently having your {day} period day.",
+    "@currentPeriod": {
+        "placeholders": {
+            "day": {
+                "type": "String"
+            }
+        }
+    },
+    "currentPeriodLasting": "It should last for {daysamount} more days.",
+    "@currentPeriodLasting": {
+        "placeholders": {
+            "daysamount": {
+                "type": "int"
+            }
+        }
+    },
+    "daysLasting": "And should last {daysamount} days",
+    "@daysLasting": {
+        "placeholders": {
+            "daysamount": {
+                "type": "int"
+            }
+        }
+    },
+    "fromToDate": "From {fromDate} to {toDate}",
+    "@fromToDate": {
+        "placeholders": {
+            "fromDate": {
+                "type": "String"
+            },
+            "toDate": {
+                "type": "String"
+            }
+        }
     }
 }

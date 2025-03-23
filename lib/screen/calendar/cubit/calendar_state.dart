@@ -14,8 +14,7 @@ class CalendarState {
   }
 
   factory CalendarState.initial() {
-    final now = DateTime.now();
-    final firstDate = DateTime(now.year, now.month, 1);
+    final firstDate = GetIt.I.get<DateTime>().copyWith(day: 1);
     return CalendarState(initialDate: firstDate, currentBaseDate: firstDate);
   }
 }

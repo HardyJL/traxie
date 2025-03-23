@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:traxie/extensions/date_extensions.dart';
 import 'package:traxie/model/journal_entry_model.dart';
 import 'package:traxie/model/period_model.dart';
 import 'package:traxie/repository/journal_entry_model_repository.dart';
@@ -36,7 +37,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   GetIt.I
     ..registerSingletonAsync<JournalEntryModelRepository>(() async => journalEntryModelRepository)
-    ..registerSingletonAsync<PeriodModelRepository>(() async => periodModelRepository);
+    ..registerSingletonAsync<PeriodModelRepository>(() async => periodModelRepository)
+    ..registerSingleton<DateTime>(DateTime.now().noTime);
   // GetIt.I.registerSingleton(
   //   () => registerRepository<JournalEntryModel>(
   //     JournalEntryModelRepository(boxName: 'journaEntry'),

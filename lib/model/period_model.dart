@@ -1,5 +1,5 @@
-import 'package:calendar_view/calendar_view.dart';
 import 'package:hive/hive.dart';
+import 'package:traxie/extensions/date_extensions.dart';
 
 part 'period_model.g.dart';
 
@@ -28,6 +28,6 @@ class PeriodModel extends HiveObject implements Comparable<PeriodModel> {
 
   @override
   int compareTo(PeriodModel other) {
-    return this.periodStartDate.withoutTime.compareTo(other.periodStartDate.withoutTime);
+    return this.periodStartDate.noTime.compareTo(other.periodStartDate.noTime);
   }
 }
