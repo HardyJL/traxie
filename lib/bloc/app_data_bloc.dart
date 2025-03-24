@@ -105,24 +105,31 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     );
   }
 
-  PeriodModel? createNextPeriod(DateTime newPeriodStart) {
-    if (state.journalEntryModels.isEmpty) return null;
-
-    late DateTime _periodStartDate;
-    final DateTime _periodEndDate = state.journalEntryModels.last.trackingDate;
+  DateTime? get _getPeriodStartDate {
     final _reversedList = state.journalEntryModels.reversed.toList();
-
-    for (var i = 0; i < _reversedList.length - 1; i++) {
+    // Traverse the list of reversed TrackingModels and find the first time that there
+    // is a difference in the dates. Onces we have that  we can use that as the  start date
+    // since this executes before we re add the models this should work
+    for (int i = 0; i < _reversedList.length - 1; i++) {
       final _currentTrackingModel = _reversedList[i];
       if (!_currentTrackingModel.trackingDate.isDayAfter(_reversedList[i + 1].trackingDate)) {
-        _periodStartDate = _currentTrackingModel.trackingDate;
-        break;
+        return _currentTrackingModel.trackingDate;
       }
     }
+    return null;
+  }
+
+  PeriodModel? createNextPeriod(DateTime newPeriodStart) {
+    if (state.journalEntryModels.isEmpty || state.journalEntryModels.length <= 1) return null;
+
+    final DateTime? _periodStartDate = _getPeriodStartDate;
+    final DateTime _periodEndDate = state.journalEntryModels.last.trackingDate;
+
+    if (_periodStartDate == null) return null;
 
     return PeriodModel(
-      cycleLength: _periodStartDate.difference(newPeriodStart).inDays,
-      periodLength: _periodStartDate.difference(_periodEndDate).inDays,
+      cycleLength: newPeriodStart.difference(_periodStartDate).inDays,
+      periodLength: _periodEndDate.difference(_periodStartDate).inDays,
       periodStartDate: _periodStartDate,
       periodEndDate: _periodEndDate,
     );
