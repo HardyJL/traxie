@@ -39,10 +39,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     }
   }
 
-  Future<void> addEntryModel(JournalEntryModel model) async {
-    return;
-  }
-
   Future<void> clearTestData() async {
     await entryModelRepository.clearAllTrackingData();
     await periodModelRepository.clearAllTrackingData();
@@ -57,7 +53,6 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
             .where((e) => e.trackingDate.noTime == event.trackingDate.noTime)
             .firstOrNull ??
         JournalEntryModel(trackingDate: event.trackingDate, flowStrength: 0);
-    print(journalModel);
     emit(
       AppDataSelectingDateState(
         journalEntryModels: state.journalEntryModels,
