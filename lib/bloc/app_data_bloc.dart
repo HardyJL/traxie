@@ -5,7 +5,6 @@ import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:traxie/extensions/date_extensions.dart';
-import 'package:traxie/extensions/period_list_extension.dart';
 import 'package:traxie/extensions/tracking_list_extension.dart';
 import 'package:traxie/model/journal_entry_model.dart';
 import 'package:traxie/model/period_model.dart';
@@ -17,7 +16,7 @@ part 'app_data_state.dart';
 
 class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
   AppDataBloc({required this.periodModelRepository, required this.entryModelRepository})
-    : super(const AppDataInitial(journalEntryModels: [], periodModels: [])) {
+    : super(AppDataInitial(journalEntryModels: [], periodModels: [])) {
     on<AppDataInitializedEvent>(_onAppDataInitializedEvent);
     on<AppDataTrackingChangedPressedEvent>(_onAppDataTrackingChangedPressedEvent);
     on<AppDataAddedOrChangedEvent>(_onAppDataAddedOrChangedEvent);
@@ -100,25 +99,12 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     );
   }
 
-  DateTime? get _getPeriodStartDate {
-    final _reversedList = state.journalEntryModels.reversed.toList();
-    // Traverse the list of reversed TrackingModels and find the first time that there
-    // is a difference in the dates. Onces we have that  we can use that as the  start date
-    // since this executes before we re add the models this should work
-    for (int i = 0; i < _reversedList.length - 1; i++) {
-      final _currentTrackingModel = _reversedList[i];
-      if (!_currentTrackingModel.trackingDate.isDayAfter(_reversedList[i + 1].trackingDate)) {
-        return _currentTrackingModel.trackingDate;
-      }
-    }
-    return null;
-  }
-
   PeriodModel? createNextPeriod(DateTime newPeriodStart) {
-    if (state.journalEntryModels.isEmpty || state.journalEntryModels.length <= 1) return null;
+    final journalEntryList = state.journalEntryModels;
+    if (journalEntryList.isEmpty || journalEntryList.length <= 1) return null;
 
-    final DateTime? _periodStartDate = _getPeriodStartDate;
-    final DateTime _periodEndDate = state.journalEntryModels.last.trackingDate;
+    final DateTime? _periodStartDate = journalEntryList.lastPeriodStartDate;
+    final DateTime _periodEndDate = journalEntryList.last.trackingDate;
 
     if (_periodStartDate == null) return null;
 

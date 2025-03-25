@@ -50,10 +50,11 @@ class StartScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
+                  state.estimatedPeriodStartDate != null ?
                   AppLocalizations.of(context).fromToDate(
-                    state.estimatedPeriodStartDate.asReadableString,
-                    state.estimatedNextPeriodEndDate.asReadableString,
-                  ),
+                    state.estimatedPeriodStartDate!.asReadableString,
+                    state.estimatedNextPeriodEndDate!.asReadableString,
+                  ) : "",
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 12),

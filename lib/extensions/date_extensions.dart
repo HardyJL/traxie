@@ -8,7 +8,7 @@ extension DateExtensions on DateTime {
   String toDayFullName(int dayOfWeek) =>
       DateFormat("EEEE").format(DateTime(this.year, this.month, dayOfWeek));
   bool isDayAfter(DateTime lastDate) {
-    if( lastDate.difference(this).inDays <= 1) return true;
+    if(this.difference(lastDate).inDays <= 1) return true;
     return false;
   }
 }

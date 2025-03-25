@@ -1,36 +1,48 @@
 part of 'app_data_bloc.dart';
 
-@immutable
-sealed class AppDataBaseState {
-  const AppDataBaseState({required this.journalEntryModels, required this.periodModels});
+class AppDataBaseState {
+  AppDataBaseState({required this.journalEntryModels, required this.periodModels});
   final List<JournalEntryModel> journalEntryModels;
   final List<PeriodModel> periodModels;
-  double estimateAverage(int Function(PeriodModel) fieldSelector) {
-    return periodModels.ignoreLast().fold(0, (prev, e) => prev + fieldSelector(e)) /
-        periodModels.ignoreLast().length;
-  }
+  double? _estimateAverage;
+  double estimateAverage(int Function(PeriodModel) fieldSelector) =>
+      _estimateAverage ??=
+          periodModels.fold(0, (prev, e) => prev + fieldSelector(e)) / periodModels.length;
 
-  int get estimateCycleLength => estimateAverage((e) => e.cycleLength).round();
-  int get estimatePeriodLength => estimateAverage((e) => e.periodLength).round();
+  int? _estimateCycleLength;
+  int get estimateCycleLength =>
+      _estimateCycleLength ??= estimateAverage((e) => e.cycleLength).round();
+  int? _estimatePeriodLength;
+  int get estimatePeriodLength =>
+      _estimatePeriodLength ??= estimateAverage((e) => e.periodLength).round();
 
-  DateTime get estimatedPeriodStartDate =>
-      periodModels.last.periodStartDate.add(Duration(days: estimateCycleLength));
-  DateTime get estimatedNextPeriodEndDate =>
-      estimatedPeriodStartDate.add(Duration(days: estimatePeriodLength));
+  DateTime? _estimatedPeriodStartDate;
+  DateTime? get estimatedPeriodStartDate =>
+      _estimatedPeriodStartDate ??= journalEntryModels.lastPeriodStartDate?.add(
+        Duration(days: estimateCycleLength),
+      );
+
+  DateTime? _estimatedNextPeriodEndDate;
+  DateTime? get estimatedNextPeriodEndDate =>
+      _estimatedNextPeriodEndDate ??= estimatedPeriodStartDate?.add(
+        Duration(days: estimatePeriodLength),
+      );
+  int? _durationUntilEstimatedPeriod;
   int get durationUntilEstimatedPeriod =>
-      estimatedPeriodStartDate.difference(GetIt.I.get<DateTime>()).inDays;
+      _durationUntilEstimatedPeriod ??=
+          estimatedPeriodStartDate?.difference(GetIt.I.get<DateTime>()).inDays ?? 0;
 }
 
 final class AppDataInitial extends AppDataBaseState {
-  const AppDataInitial({required super.journalEntryModels, required super.periodModels});
+  AppDataInitial({required super.journalEntryModels, required super.periodModels});
 }
 
 final class AppDataReadyState extends AppDataBaseState {
-  const AppDataReadyState({required super.journalEntryModels, required super.periodModels});
+  AppDataReadyState({required super.journalEntryModels, required super.periodModels});
 }
 
 final class AppDataSelectingDateState extends AppDataReadyState {
-  const AppDataSelectingDateState({
+  AppDataSelectingDateState({
     required super.journalEntryModels,
     required super.periodModels,
     required this.currentModel,

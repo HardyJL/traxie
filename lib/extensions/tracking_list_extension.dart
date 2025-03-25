@@ -9,4 +9,16 @@ extension TrackingListExtension on List<JournalEntryModel> {
   String flatten() {
     return this.map((e) => e.toString()).join('\n');
   }
+
+  DateTime? get lastPeriodStartDate {
+    final _reversedList = this.reversed.toList();
+    for (int i = 0; i < _reversedList.length - 1; i++) {
+      final _currentTrackingModel = _reversedList[i];
+      if (!_currentTrackingModel.trackingDate.isDayAfter(_reversedList[i + 1].trackingDate)) {
+      print(_currentTrackingModel.trackingDate);
+        return _currentTrackingModel.trackingDate;
+      }
+    }
+    return null;
+  }
 }

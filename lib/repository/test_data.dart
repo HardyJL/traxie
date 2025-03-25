@@ -2,14 +2,7 @@ import 'package:traxie/model/journal_entry_model.dart';
 import 'package:traxie/model/period_model.dart';
 
 final List<JournalEntryModel> journalEntryTestData = [
-  // Dezember
-  JournalEntryModel(trackingDate: DateTime(2024, 11, 18), flowStrength: 1),
-  JournalEntryModel(trackingDate: DateTime(2024, 11, 19), flowStrength: 3),
-  JournalEntryModel(trackingDate: DateTime(2024, 11, 20), flowStrength: 3),
-  JournalEntryModel(trackingDate: DateTime(2024, 11, 21), flowStrength: 2),
-  JournalEntryModel(trackingDate: DateTime(2024, 11, 22), flowStrength: 2),
-  JournalEntryModel(trackingDate: DateTime(2024, 11, 23), flowStrength: 1),
-  // Dezember
+  // December
   JournalEntryModel(trackingDate: DateTime(2024, 12, 23), flowStrength: 1),
   JournalEntryModel(trackingDate: DateTime(2024, 12, 24), flowStrength: 3),
   JournalEntryModel(trackingDate: DateTime(2024, 12, 25), flowStrength: 3),
@@ -29,17 +22,18 @@ final List<JournalEntryModel> journalEntryTestData = [
   JournalEntryModel(trackingDate: DateTime(2025, 2, 19), flowStrength: 3),
   JournalEntryModel(trackingDate: DateTime(2025, 2, 20), flowStrength: 2),
   JournalEntryModel(trackingDate: DateTime(2025, 2, 21), flowStrength: 1),
+  // March
+  JournalEntryModel(trackingDate: DateTime(2025, 3, 16), flowStrength: 1),
+  JournalEntryModel(trackingDate: DateTime(2025, 3, 17), flowStrength: 2),
+  JournalEntryModel(trackingDate: DateTime(2025, 3, 18), flowStrength: 3),
+  JournalEntryModel(trackingDate: DateTime(2025, 3, 19), flowStrength: 2),
+  JournalEntryModel(trackingDate: DateTime(2025, 3, 20), flowStrength: 2),
+  JournalEntryModel(trackingDate: DateTime(2025, 3, 21), flowStrength: 1),
 ];
 
 final List<PeriodModel> periodModelTestData = [
   PeriodModel(
-    cycleLength: 35,
-    periodLength: 6,
-    periodStartDate: DateTime(2024, 11, 18),
-    periodEndDate: DateTime(2024, 11, 23),
-  ),
-  PeriodModel(
-    cycleLength: 25,
+    cycleLength: 26,
     periodLength: 6,
     periodStartDate: DateTime(2024, 12, 23),
     periodEndDate: DateTime(2024, 12, 28),
@@ -51,7 +45,7 @@ final List<PeriodModel> periodModelTestData = [
     periodEndDate: DateTime(2025, 1, 21),
   ),
   PeriodModel(
-    cycleLength: 30,
+    cycleLength: 28,
     periodLength: 6,
     periodStartDate: DateTime(2025, 2, 16),
     periodEndDate: DateTime(2025, 2, 21),
