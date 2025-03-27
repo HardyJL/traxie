@@ -31,6 +31,40 @@ class AppDataBaseState {
   int get durationUntilEstimatedPeriod =>
       _durationUntilEstimatedPeriod ??=
           estimatedPeriodStartDate?.difference(GetIt.I.get<DateTime>()).inDays ?? 0;
+
+  List<JournalEntryModel>? _estimatedPeriodsToShow;
+  List<JournalEntryModel> estimatedPeriodsToShow() {
+    if (_estimatedPeriodsToShow != null) return _estimatedPeriodsToShow!;
+    assert(estimatedPeriodStartDate != null);
+    final List<JournalEntryModel> _journalEntryModels = [];
+    for (int month = 1; month <= 5; month++) {
+        print(estimatePeriodLength);
+      _journalEntryModels.addAll(
+        List<JournalEntryModel>.generate(
+          estimatePeriodLength!,
+          (index) => JournalEntryModel(
+            trackingDate: estimatedPeriodStartDate!.add(Duration(days: index + 30 * month)).noTime,
+            flowStrength: 0,
+          ),
+        ),
+      );
+    }
+    print(_journalEntryModels.flatten());
+    _estimatedPeriodsToShow = _journalEntryModels;
+    return _journalEntryModels;
+  }
+
+  Map<DateTime, bool> periodDays = {};
+
+  bool isPeriodDay(DateTime date) {
+    assert(journalEntryModels.isNotEmpty);
+    if (periodDays.keys.contains(date)) return periodDays[date]!;
+    final isPartOfPeriod = (journalEntryModels..addAll(estimatedPeriodsToShow())).any(
+      (element) => element.trackingDate.isSameDate(date),
+    );
+    periodDays[date] = isPartOfPeriod;
+    return isPartOfPeriod;
+  }
 }
 
 final class AppDataInitial extends AppDataBaseState {

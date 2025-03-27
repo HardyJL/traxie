@@ -1,10 +1,8 @@
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:traxie/bloc/app_data_bloc.dart';
 import 'package:traxie/extensions/date_extensions.dart';
-import 'package:traxie/model/journal_entry_model.dart';
 import 'package:traxie/screen/calendar/cubit/calendar_cubit.dart';
 import 'package:traxie/theme_colors.dart';
 
@@ -38,11 +36,7 @@ class TraxieCalendar extends StatelessWidget {
               ),
             ),
             WeekdayHeader(),
-            CalendarGrid(
-              currentBaseState: state,
-              models: context.read<AppDataBloc>().state.journalEntryModels,
-              cubit: cubit,
-            ),
+            CalendarGrid(currentBaseState: state),
           ],
         );
       },
@@ -78,25 +72,27 @@ class WeekdayHeader extends StatelessWidget {
 }
 
 class CalendarGrid extends StatelessWidget {
-  CalendarGrid({super.key, required this.currentBaseState, this.models, required this.cubit});
+  CalendarGrid({super.key, required this.currentBaseState});
 
-  final CalendarCubit cubit;
   final CalendarState currentBaseState;
-  final List<JournalEntryModel>? models;
-  // // Get the first day of the month
 
   Widget _buildDayCell(
     int day,
     DateTime date, {
-    List<JournalEntryModel>? models = null,
     required bool isCurrentMonth,
     required BuildContext ctx,
+    required AppDataBaseState appDataState,
   }) {
-    final isPeriodDay =
-        models != null ? models.any((e) => e.trackingDate.isAtSameMomentAs(date)) : false;
-
-    final isToday = date.compareWithoutTime(GetIt.I.get<DateTime>());
-
+    Color periodColor = Colors.transparent;
+    final isPeriodDay = appDataState.isPeriodDay(date);
+    if (isPeriodDay) {
+      if (date.isAfter(GetIt.I.get<DateTime>())) {
+        periodColor = Colors.blue; 
+      } else {
+        periodColor = TraxieTheme.mainRedTransparent;
+      }
+    }
+    final isToday = date.isSameDate(GetIt.I.get<DateTime>());
     return GestureDetector(
       onTap:
           () => ctx.read<AppDataBloc>().add(AppDataTrackingChangedPressedEvent(trackingDate: date)),
@@ -105,7 +101,7 @@ class CalendarGrid extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: isPeriodDay ? TraxieTheme.mainRedTransparent : Colors.transparent,
+          color: periodColor,
           border: isToday ? Border.all(color: Colors.grey, width: 1) : null,
         ),
         child: Center(
@@ -126,6 +122,7 @@ class CalendarGrid extends StatelessWidget {
     final DateTime currentDate = currentBaseState.currentBaseDate.noTime;
     // Calculate offset to start the calendar (considering Monday s the first day of the week)
 
+    final appDataState = context.read<AppDataBloc>().state;
     // Get the number of days in the month
     final daysInMonth = DateTime(currentDate.year, currentDate.month + 1, 0).day;
 
@@ -151,6 +148,7 @@ class CalendarGrid extends StatelessWidget {
           DateTime(previousMonth.year, previousMonth.month, day),
           isCurrentMonth: false,
           ctx: context,
+          appDataState: appDataState,
         ),
       );
     }
@@ -162,8 +160,8 @@ class CalendarGrid extends StatelessWidget {
           i,
           DateTime(currentDate.year, currentDate.month, i),
           isCurrentMonth: true,
-          models: models,
           ctx: context,
+          appDataState: appDataState,
         ),
       );
     }
@@ -178,6 +176,7 @@ class CalendarGrid extends StatelessWidget {
           DateTime(nextMonth.year, nextMonth.month, i),
           isCurrentMonth: false,
           ctx: context,
+          appDataState: appDataState,
         ),
       );
     }

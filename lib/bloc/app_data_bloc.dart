@@ -74,6 +74,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     if (_eventModel.flowStrength == 0) {
       if (_containsEventModel) {
         entryModelRepository.deleteTrackingData(_eventModel.trackingDate.asReadableString);
+        _updatedJournalEntryList.remove(_eventModel);
       }
     } else {
       if (_containsEventModel) {

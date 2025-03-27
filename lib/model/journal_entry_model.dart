@@ -1,4 +1,3 @@
-import 'package:calendar_view/calendar_view.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:traxie/extensions/date_extensions.dart';
@@ -42,7 +41,7 @@ class JournalEntryModel extends HiveObject implements Comparable<JournalEntryMod
   @override
   bool operator ==(Object other) {
     if (other is JournalEntryModel) {
-      return this.trackingDate.compareWithoutTime(other.trackingDate);
+      return this.trackingDate.isSameDate(other.trackingDate);
     }
     return false;
   }

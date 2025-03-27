@@ -8,7 +8,6 @@ environment:
 
 dependencies:
   bloc: ^8.1.4
-  calendar_view: ^1.4.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6

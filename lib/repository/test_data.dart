@@ -33,8 +33,8 @@ final List<JournalEntryModel> journalEntryTestData = [
 
 final List<PeriodModel> periodModelTestData = [
   PeriodModel(
-    cycleLength: 26,
     periodLength: 6,
+    cycleLength: 26,
     periodStartDate: DateTime(2024, 12, 23),
     periodEndDate: DateTime(2024, 12, 28),
   ),
@@ -45,8 +45,8 @@ final List<PeriodModel> periodModelTestData = [
     periodEndDate: DateTime(2025, 1, 21),
   ),
   PeriodModel(
-    cycleLength: 28,
     periodLength: 6,
+    cycleLength: 28,
     periodStartDate: DateTime(2025, 2, 16),
     periodEndDate: DateTime(2025, 2, 21),
   ),
