@@ -65,6 +65,9 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataBaseState> {
     AppDataAddedOrChangedEvent event,
     Emitter<AppDataBaseState> emit,
   ) {
+    if (event.entryModel.trackingDate.isAfter(GetIt.I.get<DateTime>())) {
+      return null;
+    }
     final List<JournalEntryModel> _updatedJournalEntryList = state.journalEntryModels;
     final List<PeriodModel> _updatedPeriodList = state.periodModels;
     final JournalEntryModel _eventModel = event.entryModel;

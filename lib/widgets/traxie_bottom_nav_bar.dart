@@ -25,7 +25,7 @@ class TraxieBottomNavBar extends StatelessWidget {
           destinations: const [
             NavigationDestination(label: 'Calendar', icon: Icon(Icons.crop_din_rounded)),
             NavigationDestination(label: 'Overview', icon: Icon(Icons.circle_outlined)),
-            NavigationDestination(label: 'History', icon: Icon(Icons.line_style_rounded)),
+            NavigationDestination(label: 'History', icon: Icon(Icons.density_small)),
           ],
         );
       },

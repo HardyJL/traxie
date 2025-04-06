@@ -10,22 +10,24 @@ class StartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final spacing = MediaQuery.of(context).size.height / 15;
     return BlocBuilder<AppDataBloc, AppDataBaseState>(
       builder: (context, state) {
         if (state is AppDataInitial) return const CircularProgressIndicator();
-        return Center(
+        return SizedBox(
+          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - spacing,
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Column(
-              spacing: 24,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: spacing,
               children: [
-                const SizedBox(height: 24),
                 Text(
                   AppLocalizations.of(context).nextPeriod(state.durationUntilEstimatedPeriod),
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 36),
                 SizedBox(
                   height: 220,
                   width: 220,
@@ -43,12 +45,10 @@ class StartScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 36),
                 Text(
                   AppLocalizations.of(context).daysLasting(state.estimatePeriodLength),
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                const SizedBox(height: 10),
                 Text(
                   state.estimatedPeriodStartDate != null ?
                   AppLocalizations.of(context).fromToDate(
@@ -57,7 +57,6 @@ class StartScreen extends StatelessWidget {
                   ) : "",
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                const SizedBox(height: 12),
               ],
             ),
           ),

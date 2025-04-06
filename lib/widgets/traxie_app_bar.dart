@@ -5,6 +5,7 @@ import 'package:traxie/bloc/app_data_bloc.dart';
 import 'package:traxie/cubit/navigation_cubit.dart';
 import 'package:traxie/extensions/tracking_list_extension.dart';
 import 'package:traxie/repository/journal_entry_model_repository.dart';
+import 'package:traxie/repository/period_model_repository.dart';
 
 class TraxieAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TraxieAppBar({required this.title, super.key, this.actions});
@@ -38,6 +39,7 @@ class TraxieAppBar extends StatelessWidget implements PreferredSizeWidget {
                     final bloc = context.read<AppDataBloc>();
                     final state = bloc.state;
                     final repository = GetIt.I.get<JournalEntryModelRepository>();
+                    final periodRepository = GetIt.I.get<PeriodModelRepository>();
                     await showDialog<void>(
                       context: context,
                       builder:
@@ -78,6 +80,8 @@ class TraxieAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   ),
                                   const SizedBox(height: 24),
                                   Text(repository.getAllModels().flatten()),
+                                  const SizedBox(height: 24),
+                                  Text(periodRepository.getAllModels().map((e) => e.toString()).join('\n')),
                                 ],
                               ),
                             ),

@@ -30,7 +30,7 @@ class ScreenShell extends StatelessWidget {
       child: Scaffold(
         appBar: TraxieAppBar(title: AppLocalizations.of(context).appBarTitle),
         body: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+          physics: const AlwaysScrollableScrollPhysics( parent: ClampingScrollPhysics(),),
           child: BlocBuilder<NavigationCubit, NavigationState>(
             builder: (context, state) {
               switch (state.currentScreen.index) {

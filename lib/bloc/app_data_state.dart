@@ -4,10 +4,8 @@ class AppDataBaseState {
   AppDataBaseState({required this.journalEntryModels, required this.periodModels});
   final List<JournalEntryModel> journalEntryModels;
   final List<PeriodModel> periodModels;
-  double? _estimateAverage;
   double estimateAverage(int Function(PeriodModel) fieldSelector) =>
-      _estimateAverage ??=
-          periodModels.fold(0, (prev, e) => prev + fieldSelector(e)) / periodModels.length;
+      periodModels.fold(0, (prev, e) => prev + fieldSelector(e)) / periodModels.length;
 
   int? _estimateCycleLength;
   int get estimateCycleLength =>
@@ -38,10 +36,9 @@ class AppDataBaseState {
     assert(estimatedPeriodStartDate != null);
     final List<JournalEntryModel> _journalEntryModels = [];
     for (int month = 1; month <= 5; month++) {
-        print(estimatePeriodLength);
       _journalEntryModels.addAll(
         List<JournalEntryModel>.generate(
-          estimatePeriodLength!,
+          estimatePeriodLength,
           (index) => JournalEntryModel(
             trackingDate: estimatedPeriodStartDate!.add(Duration(days: index + 30 * month)).noTime,
             flowStrength: 0,
@@ -49,7 +46,6 @@ class AppDataBaseState {
         ),
       );
     }
-    print(_journalEntryModels.flatten());
     _estimatedPeriodsToShow = _journalEntryModels;
     return _journalEntryModels;
   }
