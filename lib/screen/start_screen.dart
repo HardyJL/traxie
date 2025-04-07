@@ -68,18 +68,16 @@ class CycleProgressIndicator extends StatelessWidget {
         ? 48
         : 24;
   }
-      
+  double get angle =>
+      (state.durationUntilEstimatedPeriod + 0.25) * (2 * math.pi) / state.estimateCycleLength;
+
   @override
   Widget build(BuildContext context) {
-    final angle =  (state.durationUntilEstimatedPeriod + 0.25) * (2* math.pi) / state.estimateCycleLength;
     return CircularStepProgressIndicator(
       height: MediaQuery.of(context).size.width - 120,
       width: MediaQuery.of(context).size.width - 120,
       padding: paddding,
       startingAngle: angle,
-      // startingAngle:
-      //     (state.durationUntilEstimatedPeriod / state.estimateCycleLength * 360 * (math.pi / 180)) +
-      //     math.pi / 42,
       totalSteps: state.estimateCycleLength,
       currentStep: state.estimatePeriodLength,
       customStepSize: customStepSize,

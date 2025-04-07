@@ -16,4 +16,11 @@ class CalendarCubit extends Cubit<CalendarState> {
       ),
     );
   }
+  void GoToToday() {
+    emit(
+      state.copyWith(
+        currentBaseDate: GetIt.I.get<DateTime>(),
+      ),
+    );
+  }
 }

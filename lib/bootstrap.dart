@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
@@ -19,36 +20,30 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   };
   Bloc.observer = const AppBlocObserver();
 
+  if (kIsWeb) {
+  Hive
+    ..init(null)
+    ..registerAdapter<JournalEntryModel>(JournalEntryModelAdapter())
+    ..registerAdapter<PeriodModel>(PeriodModelAdapter());
+  } else {
   final directory = await getApplicationDocumentsDirectory();
   Hive
     ..init(directory.path)
     ..registerAdapter<JournalEntryModel>(JournalEntryModelAdapter())
     ..registerAdapter<PeriodModel>(PeriodModelAdapter());
+  }
 
   final journalEntryBox = await Hive.openBox<JournalEntryModel>('journalEntryBoxName');
   final periodBox = await Hive.openBox<PeriodModel>('periodModelBoxName');
-
   final journalEntryModelRepository = JournalEntryModelRepository(hiveObjectBox: journalEntryBox);
-  // await journalEntryModelRepository.init();
   await journalEntryModelRepository.setTestData(journalEntryTestData);
   final periodModelRepository = PeriodModelRepository(hiveObjectBox: periodBox);
-  // await periodModelRepository.init();
   await periodModelRepository.setTestData(periodModelTestData);
 
   GetIt.I
     ..registerSingletonAsync<JournalEntryModelRepository>(() async => journalEntryModelRepository)
     ..registerSingletonAsync<PeriodModelRepository>(() async => periodModelRepository)
     ..registerSingleton<DateTime>(DateTime.now().noTime);
-  // GetIt.I.registerSingleton(
-  //   () => registerRepository<JournalEntryModel>(
-  //     JournalEntryModelRepository(boxName: 'journaEntry'),
-  //     journalEntryTestData,
-  //   ),
-  // );
-  // ..registerSingletonAsync(
-  //   () => registerRepository(PeriodModelRepository(boxName: 'periods'), []),
-  // );
-  // Add cross-flavor configuration here
 
   runApp(await builder());
 }

@@ -29,22 +29,24 @@ class ScreenShell extends StatelessWidget {
       },
       child: Scaffold(
         appBar: TraxieAppBar(title: AppLocalizations.of(context).appBarTitle),
-        body: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics( parent: ClampingScrollPhysics(),),
-          child: BlocBuilder<NavigationCubit, NavigationState>(
-            builder: (context, state) {
-              switch (state.currentScreen.index) {
-                case 0:
-                  return const CalendarScreen();
-                case 1:
-                  return const StartScreen();
-                case 2:
-                  return const HistoryScreen();
-                case 3:
-                  return const FlowTrackingScreen();
-              }
-              return Container();
-            },
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics( parent: ClampingScrollPhysics(),),
+            child: BlocBuilder<NavigationCubit, NavigationState>(
+              builder: (context, state) {
+                switch (state.currentScreen.index) {
+                  case 0:
+                    return const CalendarScreen();
+                  case 1:
+                    return const StartScreen();
+                  case 2:
+                    return const HistoryScreen();
+                  case 3:
+                    return const FlowTrackingScreen();
+                }
+                return Container();
+              },
+            ),
           ),
         ),
         bottomNavigationBar: const TraxieBottomNavBar(),

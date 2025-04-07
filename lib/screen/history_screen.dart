@@ -13,7 +13,7 @@ class HistoryScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Column(
         children:
-            state.periodModels.map((e) {
+            state.periodModels.reversed.map((e) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 32),
                 child: Column(

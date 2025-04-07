@@ -35,7 +35,7 @@ class AppDataBaseState {
     if (_estimatedPeriodsToShow != null) return _estimatedPeriodsToShow!;
     assert(estimatedPeriodStartDate != null);
     final List<JournalEntryModel> _journalEntryModels = [];
-    for (int month = 1; month <= 12; month++) {
+    for (int month = 0; month <= 12; month++) {
       _journalEntryModels.addAll(
         List<JournalEntryModel>.generate(
           estimatePeriodLength,
@@ -55,7 +55,8 @@ class AppDataBaseState {
   bool isPeriodDay(DateTime date) {
     assert(journalEntryModels.isNotEmpty);
     if (periodDays.keys.contains(date)) return periodDays[date]!;
-    final isPartOfPeriod = (journalEntryModels..addAll(estimatedPeriodsToShow())).any(
+    final mergedList = journalEntryModels + estimatedPeriodsToShow();
+    final isPartOfPeriod = (mergedList).any(
       (element) => element.trackingDate.isSameDate(date),
     );
     periodDays[date] = isPartOfPeriod;

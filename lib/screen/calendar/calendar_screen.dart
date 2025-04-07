@@ -16,15 +16,7 @@ class CalendarScreen extends StatelessWidget {
           context.read<NavigationCubit>().updateState(NavigationScreens.flowTrackingScreen);
         }
       },
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            SizedBox(height: 24),
-            BlocProvider<CalendarCubit>(create: (ctx) => CalendarCubit(), child: TraxieCalendar()),
-          ],
-        ),
-      ),
+      child: BlocProvider<CalendarCubit>(create: (ctx) => CalendarCubit(), child: TraxieCalendar()),
     );
   }
 }

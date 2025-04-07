@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:traxie/bloc/app_data_bloc.dart';
 import 'package:traxie/cubit/navigation_cubit.dart';
+import 'package:traxie/extensions/date_extensions.dart';
 import 'package:traxie/extensions/tracking_list_extension.dart';
 import 'package:traxie/repository/journal_entry_model_repository.dart';
 import 'package:traxie/repository/period_model_repository.dart';
@@ -46,42 +47,41 @@ class TraxieAppBar extends StatelessWidget implements PreferredSizeWidget {
                           (_) => AlertDialog.adaptive(
                             content: SingleChildScrollView(
                               child: Column(
+                                spacing: 12,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Text(
                                     'Journal Conut ${state.journalEntryModels.length} - Period Count ${state.periodModels.length}',
                                   ),
-                                  const SizedBox(height: 24),
                                   ElevatedButton(
                                     onPressed: bloc.clearTestData,
                                     child: const Text('Clear'),
                                   ),
-                                  if (state is AppDataSelectingDateState)
-                                    Text(state.currentModel.toString()),
-                                  const SizedBox(height: 24),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                    final date = GetIt.I.get<DateTime>();
+                                    GetIt.I.registerSingleton<DateTime>(date.add(Duration(days: 1)));
+                                    },
+                                    child: const Text('Next Date'),
+                                  ),
+                                  Text(GetIt.I.get<DateTime>().asReadableString), 
                                   Text(
                                     'Estimated Cycle Length: ${state.estimateAverage((e) => e.cycleLength)}',
                                   ),
-                                  const SizedBox(height: 24),
                                   Text(
                                     'Estimated Period Length: ${state.estimateAverage((e) => e.periodLength)}',
                                   ),
-                                  const SizedBox(height: 24),
                                   Text(
                                     'durationUntilEstimatedPeriod: ${state.durationUntilEstimatedPeriod}',
                                   ),
-                                  const SizedBox(height: 24),
                                   Text(
                                     'Estimated Period Start Date: ${state.estimatedPeriodStartDate}',
                                   ),
-                                  const SizedBox(height: 24),
                                   Text(
                                     'Estimated Period End Date: ${state.estimatedNextPeriodEndDate}',
                                   ),
-                                  const SizedBox(height: 24),
-                                  Text(repository.getAllModels().flatten()),
-                                  const SizedBox(height: 24),
-                                  Text(periodRepository.getAllModels().map((e) => e.toString()).join('\n')),
+                                  // Text(repository.getAllModels().flatten()),
+                                  // Text(periodRepository.getAllModels().map((e) => e.toString()).join('\n')),
                                 ],
                               ),
                             ),

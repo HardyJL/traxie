@@ -12,32 +12,42 @@ class TraxieCalendar extends StatelessWidget {
     final cubit = context.read<CalendarCubit>();
     return BlocBuilder<CalendarCubit, CalendarState>(
       builder: (context, state) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.chevron_left),
-                    onPressed: () => cubit.ChangeMonth(),
-                  ),
-                  Text(
-                    '${(state.currentBaseDate.toMonthFullName())} ${state.currentBaseDate.year}',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.chevron_right),
-                    onPressed: () => cubit.ChangeMonth(forward: true),
-                  ),
-                ],
+        return SizedBox(
+          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 12, 
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 8,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.chevron_left),
+                      onPressed: () => cubit.ChangeMonth(),
+                      iconSize: 32,
+                    ),
+                    TextButton(
+                      onPressed: () => cubit.GoToToday(),
+                      child: Text(
+                        '${(state.currentBaseDate.toMonthFullName())} ${state.currentBaseDate.year}',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.chevron_right),
+                      onPressed: () => cubit.ChangeMonth(forward: true),
+                      iconSize: 32,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            WeekdayHeader(),
-            CalendarGrid(currentBaseState: state),
-          ],
+              const SizedBox(height: 12),
+              WeekdayHeader(),
+              CalendarGrid(currentBaseState: state),
+            ],
+          ),
         );
       },
     );
@@ -87,9 +97,9 @@ class CalendarGrid extends StatelessWidget {
     final isPeriodDay = appDataState.isPeriodDay(date);
     if (isPeriodDay) {
       if (date.isAfter(GetIt.I.get<DateTime>())) {
-        periodColor = Colors.blue; 
-      } else {
         periodColor = TraxieTheme.mainRedTransparent;
+      } else {
+        periodColor = TraxieTheme.mainRedTransparentDarker;
       }
     }
     final isToday = date.isSameDate(GetIt.I.get<DateTime>());
@@ -194,6 +204,6 @@ class CalendarGrid extends StatelessWidget {
         ),
       );
     }
-    return Column(children: rows);
+    return Column(spacing: 8, children: rows);
   }
 }
