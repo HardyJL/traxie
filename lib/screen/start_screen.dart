@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:traxie/bloc/app_data_bloc.dart';
 import 'package:traxie/extensions/date_extensions.dart';
 import 'package:traxie/l10n/l10n.dart';
+import 'package:traxie/theme_colors.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -15,7 +17,11 @@ class StartScreen extends StatelessWidget {
       builder: (context, state) {
         if (state is AppDataInitial) return const CircularProgressIndicator();
         return SizedBox(
-          height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - spacing,
+          height:
+              MediaQuery.of(context).size.height -
+              kToolbarHeight -
+              kBottomNavigationBarHeight -
+              spacing,
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Column(
@@ -28,33 +34,18 @@ class StartScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
-                  height: 220,
-                  width: 220,
-                  child: Transform.rotate(
-                    angle:
-                        state.durationUntilEstimatedPeriod /
-                        state.estimateCycleLength *
-                        360 *
-                        (math.pi / 180),
-                    child: CircularProgressIndicator(
-                      color: const Color.fromARGB(255, 164, 14, 57),
-                      strokeWidth: 20,
-                      value: state.estimatePeriodLength / state.estimateCycleLength,
-                      backgroundColor: const Color.fromARGB(255, 194, 236, 255),
-                    ),
-                  ),
-                ),
+                CycleProgressIndicator(state: state),
                 Text(
                   AppLocalizations.of(context).daysLasting(state.estimatePeriodLength),
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Text(
-                  state.estimatedPeriodStartDate != null ?
-                  AppLocalizations.of(context).fromToDate(
-                    state.estimatedPeriodStartDate!.asReadableString,
-                    state.estimatedNextPeriodEndDate!.asReadableString,
-                  ) : "",
+                  state.estimatedPeriodStartDate != null
+                      ? AppLocalizations.of(context).fromToDate(
+                        state.estimatedPeriodStartDate!.asReadableString,
+                        state.estimatedNextPeriodEndDate!.asReadableString,
+                      )
+                      : "",
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ],
@@ -62,6 +53,38 @@ class StartScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class CycleProgressIndicator extends StatelessWidget {
+  const CycleProgressIndicator({super.key, required this.state});
+  final AppDataBaseState state;
+  final paddding = math.pi / 9;
+  double customStepSize(idx, _) {
+    return idx ==
+            (state.estimateCycleLength - state.durationUntilEstimatedPeriod) %
+                state.estimateCycleLength
+        ? 48
+        : 24;
+  }
+      
+  @override
+  Widget build(BuildContext context) {
+    final angle =  (state.durationUntilEstimatedPeriod + 0.25) * (2* math.pi) / state.estimateCycleLength;
+    return CircularStepProgressIndicator(
+      height: MediaQuery.of(context).size.width - 120,
+      width: MediaQuery.of(context).size.width - 120,
+      padding: paddding,
+      startingAngle: angle,
+      // startingAngle:
+      //     (state.durationUntilEstimatedPeriod / state.estimateCycleLength * 360 * (math.pi / 180)) +
+      //     math.pi / 42,
+      totalSteps: state.estimateCycleLength,
+      currentStep: state.estimatePeriodLength,
+      customStepSize: customStepSize,
+      selectedColor: TraxieTheme.mainRed,
+      unselectedColor: Colors.grey,
     );
   }
 }

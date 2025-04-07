@@ -35,7 +35,7 @@ class AppDataBaseState {
     if (_estimatedPeriodsToShow != null) return _estimatedPeriodsToShow!;
     assert(estimatedPeriodStartDate != null);
     final List<JournalEntryModel> _journalEntryModels = [];
-    for (int month = 1; month <= 5; month++) {
+    for (int month = 1; month <= 12; month++) {
       _journalEntryModels.addAll(
         List<JournalEntryModel>.generate(
           estimatePeriodLength,
