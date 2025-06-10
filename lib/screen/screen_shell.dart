@@ -29,9 +29,38 @@ class ScreenShell extends StatelessWidget {
       },
       child: Scaffold(
         appBar: TraxieAppBar(title: AppLocalizations.of(context).appBarTitle),
+        drawer: SafeArea(
+          child: NavigationDrawer(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  AppLocalizations.of(context).appBarTitle,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              Divider(),
+              NavigationDrawerDestination(
+                icon: Icon(Icons.arrow_upward_rounded),
+                label: Text("Export"),
+              ),
+              NavigationDrawerDestination(
+                icon: Icon(Icons.arrow_downward_rounded),
+                label: Text("Import"),
+              ),
+              NavigationDrawerDestination(icon: Icon(Icons.settings), label: Text("Settings")),
+              Divider(),
+              TextButton.icon(
+                icon: Icon(Icons.copyright_rounded),
+                label: Text("License"),
+                onPressed: () {},
+              ),
+            ],
+          ),
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics( parent: ClampingScrollPhysics(),),
+            physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
             child: BlocBuilder<NavigationCubit, NavigationState>(
               builder: (context, state) {
                 switch (state.currentScreen.index) {
