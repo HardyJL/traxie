@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
-class HiveDatabaseRepository<T extends HiveObject> {
-  HiveDatabaseRepository({required this.hiveObjectBox});
+class BaseRepository<T extends HiveObject> {
+  BaseRepository({required this.hiveObjectBox});
 
   final Box<T> hiveObjectBox;
 
