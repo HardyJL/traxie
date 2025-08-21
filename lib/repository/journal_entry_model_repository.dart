@@ -11,15 +11,6 @@ class JournalEntryModelRepository extends HiveDatabaseRepository<JournalEntryMod
   }
 
   @override
-  Future<void> setTestData(List<JournalEntryModel> testData) async {
-    if (hiveObjectBox.isEmpty) {
-      for (final data in testData) {
-        await addModel(data);
-      }
-    }
-  }
-
-  @override
   List<JournalEntryModel> getAllModels() {
     return hiveObjectBox.values.toList()..sort((a, b) => a.trackingDate.compareTo(b.trackingDate));
   }

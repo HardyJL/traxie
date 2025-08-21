@@ -46,5 +46,7 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "nothingAdded": "Please add your first period",
+    "onceAddedShow": "Once you've added your first period, you will see an overview here."
 }

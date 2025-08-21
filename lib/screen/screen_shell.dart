@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:traxie/cubit/navigation_cubit.dart';
-import 'package:traxie/l10n/l10n.dart';
+import 'package:traxie/l10n/arb/app_localizations.dart';
 import 'package:traxie/screen/calendar/calendar_screen.dart';
 import 'package:traxie/screen/flow_tracking_screen.dart';
 import 'package:traxie/screen/history_screen.dart';
@@ -29,31 +29,30 @@ class ScreenShell extends StatelessWidget {
       },
       child: Scaffold(
         appBar: TraxieAppBar(title: AppLocalizations.of(context).appBarTitle),
-        drawer: SafeArea(
-          child: NavigationDrawer(
+        drawer: Drawer(
+          child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8),
+              DrawerHeader(
                 child: Text(
                   AppLocalizations.of(context).appBarTitle,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-              Divider(),
-              NavigationDrawerDestination(
-                icon: Icon(Icons.arrow_upward_rounded),
-                label: Text("Export"),
+              ListTile(
+                leading: Icon(Icons.arrow_upward_rounded),
+                title: Text("Export"),
+                onTap: () {},
               ),
-              NavigationDrawerDestination(
-                icon: Icon(Icons.arrow_downward_rounded),
-                label: Text("Import"),
+              ListTile(
+                leading: Icon(Icons.arrow_downward_rounded),
+                title: Text("Import"),
+                onTap: () {},
               ),
-              NavigationDrawerDestination(icon: Icon(Icons.settings), label: Text("Settings")),
-              Divider(),
-              TextButton.icon(
-                icon: Icon(Icons.copyright_rounded),
-                label: Text("License"),
-                onPressed: () {},
+              ListTile(leading: Icon(Icons.settings), title: Text("Settings"), onTap: () {}),
+              ListTile(
+                leading: Icon(Icons.copyright_rounded),
+                title: Text("License"),
+                onTap: () {},
               ),
             ],
           ),

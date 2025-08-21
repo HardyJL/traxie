@@ -5,9 +5,6 @@ class HiveDatabaseRepository<T extends HiveObject> {
 
   final Box<T> hiveObjectBox;
 
-  Future<void> setTestData(List<T> testData) =>
-      throw UnimplementedError("Try calling the specific repository");
-
   Future<void> addModel(T model) => throw UnimplementedError("Try calling the specific repository");
 
   Future<void> updateModel(T model) async {

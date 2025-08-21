@@ -12,7 +12,6 @@ import 'package:traxie/model/journal_entry_model.dart';
 import 'package:traxie/model/period_model.dart';
 import 'package:traxie/repository/journal_entry_model_repository.dart';
 import 'package:traxie/repository/period_model_repository.dart';
-import 'package:traxie/repository/test_data.dart';
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   FlutterError.onError = (details) {
@@ -21,24 +20,22 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   Bloc.observer = const AppBlocObserver();
 
   if (kIsWeb) {
-  Hive
-    ..init(null)
-    ..registerAdapter<JournalEntryModel>(JournalEntryModelAdapter())
-    ..registerAdapter<PeriodModel>(PeriodModelAdapter());
+    Hive
+      ..init(null)
+      ..registerAdapter<JournalEntryModel>(JournalEntryModelAdapter())
+      ..registerAdapter<PeriodModel>(PeriodModelAdapter());
   } else {
-  final directory = await getApplicationDocumentsDirectory();
-  Hive
-    ..init(directory.path)
-    ..registerAdapter<JournalEntryModel>(JournalEntryModelAdapter())
-    ..registerAdapter<PeriodModel>(PeriodModelAdapter());
+    final directory = await getApplicationDocumentsDirectory();
+    Hive
+      ..init(directory.path)
+      ..registerAdapter<JournalEntryModel>(JournalEntryModelAdapter())
+      ..registerAdapter<PeriodModel>(PeriodModelAdapter());
   }
 
   final journalEntryBox = await Hive.openBox<JournalEntryModel>('journalEntryBoxName');
   final periodBox = await Hive.openBox<PeriodModel>('periodModelBoxName');
   final journalEntryModelRepository = JournalEntryModelRepository(hiveObjectBox: journalEntryBox);
-  await journalEntryModelRepository.setTestData(journalEntryTestData);
   final periodModelRepository = PeriodModelRepository(hiveObjectBox: periodBox);
-  await periodModelRepository.setTestData(periodModelTestData);
 
   GetIt.I
     ..registerSingletonAsync<JournalEntryModelRepository>(() async => journalEntryModelRepository)
